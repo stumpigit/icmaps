@@ -106,6 +106,7 @@ function toggleModal(){
       Dashboard.mycanisters = mycanisters;
       mycanisters = mycanisters;
       Dashboard.mycanisters = mycanisters;
+      console.log("Durch ein canister durch");
     };
     
     showLoadingModal = false;

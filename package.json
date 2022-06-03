@@ -2,7 +2,7 @@
   "name": "icmaps",
   "version": "1.0.0",
   "homepage": "https://www.icmaps.org/",
-  "description": "ICMaps - Fully scalable and dezentralized wmts server for Internet Computer",
+  "description": "ICMaps - Fully scalable and decentralized wmts server for Internet Computer",
   "repository": "https://github.com/stumpigit/icmaps",
   "license": "MIT",
   "keywords": [

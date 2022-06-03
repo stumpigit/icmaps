@@ -30,7 +30,7 @@ module {
     #
       "    <ows:Title>IC WMTS Server</ows:Title>"
     #
-      "    <ows:Abstract>A dezentralized WMTS Server on Internet Computer</ows:Abstract>"
+      "    <ows:Abstract>A decentralized WMTS Server on Internet Computer</ows:Abstract>"
     #
       "    <ows:Keywords/>"
     #

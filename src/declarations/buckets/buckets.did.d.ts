@@ -1,5 +1,6 @@
 import type { Principal } from '@dfinity/principal';
 export interface Bucket {
+  'authorize' : (arg_0: Principal) => Promise<boolean>,
   'generateRandom' : (arg_0: string) => Promise<string>,
   'getChunks' : (arg_0: FileId, arg_1: bigint) => Promise<[] | [Array<number>]>,
   'getFileInfo' : (arg_0: FileId) => Promise<[] | [FileData]>,
