@@ -70,7 +70,7 @@
               <li>
                 <a
                   class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                  href="https://www.github.com/creativetimofficial?ref=ns-footer"
+                  href="https://github.com/stumpigit/icmaps/"
                 >
                   Github
                 </a>
@@ -88,7 +88,7 @@
               <li>
                 <a
                   class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                  href="https://github.com/creativetimofficial/notus-svelte/blob/main/LICENSE.md?ref=ns-footer"
+                  href="https://github.com/stumpigit/icmaps/blob/main/LICENSE?ref=ns-footer"
                 >
                   MIT License
                 </a>

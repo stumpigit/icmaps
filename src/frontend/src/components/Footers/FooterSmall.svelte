@@ -52,7 +52,7 @@
           </li>
           <li>
             <a
-              href="https://github.com/creativetimofficial/notus-svelte/blob/main/LICENSE.md?ref=ns-footer-small"
+              href="https://github.com/stumpigit/icmaps/blob/main/LICENSE?ref=ns-footer-small"
               class="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
             >
               MIT License

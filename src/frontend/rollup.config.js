@@ -36,7 +36,7 @@ const indexTemplate = `<!--
 
 * Product Page: https://www.icmaps.org
 * Copyright 2022 Christoph Suter (https://www.suter-burri.ch)
-* Licensed under MIT (https://github.com/creativetimofficial/notus-svelte/blob/main/LICENSE.md)
+* Licensed under MIT (https://github.com/stumpigit/icmaps/blob/main/LICENSE)
 
 * Based on Tailwind Starter Kit by Creative Tim
 * Tailwind Starter Kit Page: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/presentation
