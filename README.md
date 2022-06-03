@@ -30,6 +30,36 @@ The backend is the storage interface for the frontend, where the user - canister
 
 ## Getting Started
 
-## Compiling the code
+## Compiling the code and running local
+For compiling the code you need a linux or mac environment or use Docker in combination with visual studio code.
+First download and install the dfx sdk. According to [Internet Computer instructions](https://internetcomputer.org/docs/current/developer-docs/quickstart/local-quickstart/) you have to run:
+
+    sh -ci "$(curl -fsSL https://smartcontracts.org/install.sh)"
+Afterwards you can clone the git repository to a directory:
+
+Now, start the local internet computer
+
+    dfx start --background
+Next we can build ICMaps
+
+    dfx deploy --argument '(null)'
+
+Well done, now you can start your Browser and browse to the frontend webpage. After the deploy you well see the Principal of the frontend. Or you can get it by typing:
+
+    dfx canister id frontend
+
+with this id you can go to page http://{principal}.localhost:8080/ and log in with a new Internet Identity. If you are logged in, click on your avatar on the top right and select "Who am I". Copy and use your Principal for making you admin to the backend:
+
+    dfx canister update-settings backend --add-controller 4y5a6-gc2oc-4qebg-roaeu-2xxdd-3sfyo-zaawe-sbyxn-biwwj-fdbx5-qqe
+
+(Replace the ID)
+
+It's important that the backend is a controller of himself so we have to adjust some rights. Also for the next step, we enable the backend to write to the wmtsserver
+
+    dfx canister update-settings backend --add-controller $(dfx canister id backend)
+    dfx canister update-settings wmtsserver --add-controller $(dfx canister id backend)
+    
+Congratulation, you should now have your first WMTS Canister in your canisters and are ready to add layers to it. But first you have to create the initial TileMatrixSet and Layer-Structure. In the ICMaps interface click on the canister and on the button "Refresh layer tree". 
+
 
 ## Contributing

@@ -82,7 +82,55 @@
     }
   }
 
+
+  import Prism from 'prismjs';
+  let code = `fetch(
+        myProtocol + "://" +
+          mycanister.canisterId.toText() +
+          myHost +
+          "/wmts?request=getcapabilities",
+        { mode: "cors" }
+      )
+        .then(function (response) {
+          return response.text();
+        })
+        .then(function (text) {
+          const result = parser.read(text);
+          console.log(result);
+          const options = optionsFromCapabilities(result, {
+            layer: layeridentifier,
+          });
+
+          let icsource = new WMTS(options);
+
+          let iclayer = new TileLayer({
+            opacity: 1,
+            source: icsource,
+          });
+          const map = new Map({
+            target: "map",
+            controls: defaultControls().extend([
+              new ScaleLine({
+                units: "metric",
+              }),
+            ]),
+            layers: [iclayer],
+            view: view,
+          });
+        });
+      }
+      `;
+  let language = 'javascript';
  
 </script>
 
 <div id="map" class="relative w-full rounded h-600-px" />
+<div id="code" class="code relative w-full rounded h-600-px">
+  {@html Prism.highlight(code, Prism.languages[language])}
+
+</div>
+<style>
+  .code {
+    white-space: pre-wrap;
+  }
+</style>
