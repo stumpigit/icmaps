@@ -1,0 +1,52 @@
+{
+  "canisters": {
+    "internet_identity": {
+      "type": "custom",
+      "build": "curl -sSL https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm -o src/internet_identity/internet_identity.wasm",
+      "candid": "src/internet_identity/internet_identity.did",
+      "wasm": "src/internet_identity/internet_identity.wasm"
+    },
+    "wmtsserver": {
+      "main" : "src/wmtsserver/WMTSServer.mo",
+      "type" : "motoko"
+    },
+    "buckets": {
+      "main" : "src/wmtsserver/Buckets.mo",
+      "type" : "motoko"
+    },
+    "Container": {
+      "main" : "src/wmtsserver/Container.mo",
+      "type" : "motoko"
+    },
+    "backend": {
+      "main": "src/backend/main.mo",
+      "type": "motoko"
+    },
+    "frontend": {
+      "dependencies": [
+        "backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/frontend/public/index.html"
+      },
+      "source": [
+        "src/frontend/public"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "dfx": "0.9.3",
+  "networks": {
+    "local": {
+      "bind": "0.0.0.0:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}

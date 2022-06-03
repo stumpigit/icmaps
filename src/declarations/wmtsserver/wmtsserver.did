@@ -1,0 +1,176 @@
+type WMTS__1 = 
+ record {
+   city: text;
+   country: text;
+   electronicMailAddress: text;
+   individualName: text;
+   positionName: text;
+ };
+type WMTSTile = 
+ record {
+   format: text;
+   layer: text;
+   srs: text;
+   style: text;
+   tileCol: nat;
+   tileMatrix: nat;
+   tileMatrixSet: text;
+   tileRow: nat;
+   version: text;
+ };
+type WMTSServer = 
+ service {
+   addLayer: (text, text, text, text, text, text, text) -> () oneway;
+   addTileMatrixSet: (TileMatrixSet) -> ();
+   authorize: (principal) -> (bool);
+   getCanisterCycleInfo: () -> (vec CanisterCycleInfo);
+   getLayerInfos: () -> (vec LayerInfo) query;
+   getTileMatrixSet: (text) -> (TileMatrixSet);
+   getTileMatrixSetFromCRS: (text) -> (TileMatrixSet);
+   getVersion: () -> (text) query;
+   getWMTSFile: (WMTSTile) -> (opt FileData) query;
+   getWMTSParameters: () -> (WMTS__1) query;
+   get_controllers: () -> (vec principal);
+   http_request: (HttpRequest__1) -> (HttpResponse) query;
+   http_request_update: (HttpRequest) -> (HttpResponse);
+   idQuick: () -> (principal);
+   putFileChunks: (FileId__1, nat, nat, blob) -> ();
+   putFileInfo: (FileInfo, bool) -> (opt FileId__1);
+   setWMTSParameters: (WMTS) -> () oneway;
+   updateAllFiles: () -> ();
+   updateStatus: () -> ();
+   updateWMSLayers: (opt FileData) -> ();
+   wallet_balance: () -> (nat);
+   wallet_receive: () -> ();
+ };
+type WMTS = 
+ record {
+   city: text;
+   country: text;
+   electronicMailAddress: text;
+   individualName: text;
+   positionName: text;
+ };
+type WGS84BoundingBox = 
+ record {
+   lowerCorner: text;
+   upperCorner: text;
+ };
+type Timestamp = int;
+type TileMatrixSet__1 = 
+ record {
+   identifier: text;
+   supportedCRS: text;
+   xml: text;
+ };
+type TileMatrixSet = 
+ record {
+   identifier: text;
+   supportedCRS: text;
+   xml: text;
+ };
+type StreamingStrategy = variant {
+                           Callback:
+                            record {
+                              callback:
+                               func (StreamingCallbackToken) ->
+                                (StreamingCallbackHttpResponse) query;
+                              token: StreamingCallbackToken;
+                            };};
+type StreamingCallbackToken = 
+ record {
+   content_encoding: text;
+   index: nat;
+   key: text;
+   sha256: opt blob;
+ };
+type StreamingCallbackHttpResponse = 
+ record {
+   body: blob;
+   token: opt StreamingCallbackToken;
+ };
+type LayerInfo = 
+ record {
+   format: text;
+   identifier: text;
+   providedTilematrixSets: vec nat;
+   tilematrixset: TileMatrixSet__1;
+   title: text;
+   url: text;
+   wGS84BoundingBox: WGS84BoundingBox;
+ };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   status_code: nat16;
+   streaming_strategy: opt StreamingStrategy;
+   upgrade: bool;
+ };
+type HttpRequest__1 = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   method: text;
+   url: text;
+ };
+type HttpRequest = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   method: text;
+   url: text;
+ };
+type HeaderField = 
+ record {
+   text;
+   text;
+ };
+type FileInfo = 
+ record {
+   chunkCount: nat;
+   createdAt: Timestamp;
+   extension: FileExtension;
+   layer: text;
+   name: text;
+   size: nat;
+   tilematrixset: text;
+   x: nat;
+   y: nat;
+   z: nat;
+ };
+type FileId__1 = text;
+type FileId = text;
+type FileExtension = 
+ variant {
+   gif;
+   jpeg;
+   jpg;
+   png;
+ };
+type FileData = 
+ record {
+   chunkCount: nat;
+   cid: principal;
+   createdAt: Timestamp;
+   extension: FileExtension;
+   fileId: FileId;
+   layer: text;
+   name: text;
+   size: nat;
+   tilematrixset: text;
+   uploadedAt: Timestamp;
+   x: nat;
+   y: nat;
+   z: nat;
+ };
+type CanisterCycleInfo = 
+ record {
+   canisterId: text;
+   canisterType: variant {
+                   bucket;
+                   container;
+                 };
+   cycles: nat;
+ };
+service : () -> WMTSServer

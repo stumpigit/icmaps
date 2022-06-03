@@ -1,0 +1,7 @@
+// Version: 1.0.0
+type Canister = {desc : Principal; managed : Bool};
+type MyCanistersArray = [Canister];
+type User = Text;
+actor {
+  stable var canistersArray : [(User, MyCanistersArray)]
+};

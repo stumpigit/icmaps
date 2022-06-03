@@ -1,0 +1,69 @@
+type Timestamp = int;
+type FileInfo = 
+ record {
+   chunkCount: nat;
+   createdAt: Timestamp;
+   extension: FileExtension;
+   layer: text;
+   name: text;
+   size: nat;
+   tilematrixset: text;
+   x: nat;
+   y: nat;
+   z: nat;
+ };
+type FileId__1 = text;
+type FileId = text;
+type FileExtension = 
+ variant {
+   gif;
+   jpeg;
+   jpg;
+   png;
+ };
+type FileData = 
+ record {
+   chunkCount: nat;
+   cid: principal;
+   createdAt: Timestamp;
+   extension: FileExtension;
+   fileId: FileId__1;
+   layer: text;
+   name: text;
+   size: nat;
+   tilematrixset: text;
+   uploadedAt: Timestamp;
+   x: nat;
+   y: nat;
+   z: nat;
+ };
+type Container = 
+ service {
+   addCanisterIdToBucketsList: (text) -> ();
+   authorize: (principal) -> (bool);
+   getAllFiles: () -> (vec FileData);
+   getCanisterCycleInfo: () -> (vec CanisterCycleInfo);
+   getFileChunk: (FileId, nat, principal) -> (opt blob);
+   getFileInfo: (FileId, principal) -> (opt FileData);
+   getStatus: () -> (vec record {
+                           principal;
+                           nat;
+                         }) query;
+   get_controllers: () -> (vec principal);
+   putFileChunks: (FileId, nat, nat, blob) -> (opt FileData);
+   putFileInfo: (FileInfo) -> (opt FileId);
+   updateCycles: () -> ();
+   updateStatus: () -> ();
+   wallet_balance: () -> (nat);
+   wallet_receive: () -> ();
+ };
+type CanisterCycleInfo = 
+ record {
+   canisterId: text;
+   canisterType: variant {
+                   bucket;
+                   container;
+                 };
+   cycles: nat;
+ };
+service : () -> Container

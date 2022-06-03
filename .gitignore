@@ -1,0 +1,4 @@
+/node_modules/
+/.dfx/
+/src/internet_identity/
+canister_ids.json

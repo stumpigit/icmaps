@@ -1,0 +1,45 @@
+type User = text;
+type Timestamp = int;
+type FileInfo = 
+ record {
+   chunkCount: nat;
+   createdAt: Timestamp;
+   name: text;
+   size: nat;
+ };
+type FileId__1 = text;
+type FileId = text;
+type FileData = 
+ record {
+   chunkCount: nat;
+   cid: principal;
+   createdAt: Timestamp;
+   fileId: FileId__1;
+   name: text;
+   size: nat;
+   uploadedAt: Timestamp;
+ };
+type Canister = 
+ record {
+   desc: principal;
+   managed: bool;
+ };
+service : {
+  authorize: (principal) -> (bool);
+  generateRandom: (text) -> (text);
+  getChunks: (FileId, nat) -> (opt blob) query;
+  getFileInfo: (FileId) -> (opt FileData) query;
+  getInfo: () -> (vec FileData) query;
+  getMyCanisters: (User) -> (vec Canister);
+  getSize: () -> (nat);
+  get_controllers: () -> (vec principal);
+  insert: (User, text, bool) -> ();
+  installWMTSServer: (text, text) -> ();
+  putChunks: (FileId, nat, blob) -> (opt null);
+  putFile: (text, FileInfo) -> (opt FileId);
+  updateFileInfoData: (FileId, FileData) -> () oneway;
+  upgradeWMTSServer: (text, text) -> ();
+  wallet_balance: () -> (nat);
+  wallet_receive: () -> (record {accepted: nat64;});
+  whoami: () -> (principal) query;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "icmaps",
+  "version": "1.0.0",
+  "homepage": "https://www.icmaps.org/",
+  "description": "ICMaps - Fully scalable and dezentralized wmts server for Internet Computer",
+  "repository": "https://github.com/stumpigit/icmaps",
+  "license": "MIT",
+  "keywords": [
+    "Internet Computer",
+    "Motoko",
+    "Svelte",
+    "WMTS",
+    "Internet Identity",
+    "OGC"
+  ],
+  "scripts": {
+    "build:tailwind": "cd src/frontend/ && npm run build:tailwind",
+    "build": "cd src/frontend && npm run build",
+    "prebuild": "npm run copy:types && replace 'process.env.DFX_NETWORK' 'local' src/wmtsserver/WMTSGetCapabilities.mo",
+    "dev": "cd src/frontend && npm run dev",
+    "prestart": "npm run copy:types",
+    "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
+  },
+  "devDependencies": {
+    "rollup": "^2.72.0",
+    "rollup-plugin-browserslist": "github:jonathantneal/rollup-plugin-browser-resolve",
+    "rollup-plugin-svelte": "^7.1.0",
+    "svelte": "^3.48.0",
+    "replace": "^1.2.1"
+  },
+  "dependencies": {
+  }
+}
