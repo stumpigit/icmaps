@@ -24,11 +24,8 @@
 
   {#if mycanisters != null}
     <div class="w-full px-4">
-      <div
-        class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
-      >
+
         <MapPreview {mycanister} {layeridentifier} />
-      </div>
     </div>
   {/if}
 </div>

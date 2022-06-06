@@ -15,6 +15,13 @@ import Buffer "mo:base/Buffer";
 import Cycles "mo:base/ExperimentalCycles";
 import Iter "mo:base/Iter";
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// main.mo - Backend for ICMaps - WMTS Canister configuration tool                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Author: Christoph Suter                                                                             //
+// Licence: MIT                                                                                        //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 shared({caller = owner}) actor class Backend() = this {
     // Storage for user-canisters
     public type Canister = {
@@ -24,19 +31,20 @@ shared({caller = owner}) actor class Backend() = this {
 
     public type User = Text;
 
+    // Save a Map Users - Canisters. Every user can have one or more canisters with the wmts software on it
     type MyCanistersArray = [Canister];
     stable var canistersArray : [(User, MyCanistersArray)] = [];
     let canisters = Map.HashMap<User, Buffer.Buffer<Canister>>(100, Text.equal, Text.hash);
 
+    // Get the controllers of the current canister. Used from authorize
     public func get_controllers() : async [Principal] {
         let principal = Principal.fromActor(this);
         let status = await IC.canister_status({ canister_id = principal });
         return status.settings.controllers;
     };
 
+    // Is the caller authorized to call the functions? First check owner, than myself and finaly check the controllers
     public func authorize(caller: Principal) : async(Bool) {
-        Debug.print("Caller:");
-        Debug.print(debug_show(caller));
         var isAuthorized : Bool = false;
         if (owner == caller) return true;
         if (Principal.fromActor(this) == caller) return true;
@@ -48,6 +56,7 @@ shared({caller = owner}) actor class Backend() = this {
         return isAuthorized;
     };
 
+    // Insert a canister for a specific user
     public shared({caller}) func insert(user : User, canister : Text, isManaged: Bool): async () {
         assert (Principal.toText(caller) == user);
         let newCanister : Canister = { desc = Principal.fromText(canister); managed = isManaged;};
@@ -63,6 +72,7 @@ shared({caller = owner}) actor class Backend() = this {
         canisters.put(user, c);
     };
 
+    // Get the canisters for a user
     public shared({caller}) func getMyCanisters(id : User) :async [Canister] {
         assert (Principal.toText(caller) == id);
         let mycanisters : ?Buffer.Buffer<Canister> = canisters.get(id);
@@ -73,10 +83,12 @@ shared({caller = owner}) actor class Backend() = this {
         c.toArray();
     };
 
+    // Just for some tests
     public shared query (msg) func whoami() : async Principal {
         return msg.caller;
     };
 
+    // Save the HashMap to the stable array
     system func preupgrade()  {
         let buff = Map.HashMap<User, MyCanistersArray>(100, Text.equal, Text.hash);
         for ((user, buffer) in canisters.entries()) {
@@ -92,6 +104,7 @@ shared({caller = owner}) actor class Backend() = this {
         canistersArray := Iter.toArray<(User, MyCanistersArray)>(buff.entries());
     };
 
+    // Populate the HashMap from the stable array
     system func postupgrade() {
         for ((user, myCanistersArray) in canistersArray.vals()) {
           let mycans = Buffer.Buffer<Canister>(10);
@@ -104,6 +117,8 @@ shared({caller = owner}) actor class Backend() = this {
     };
 
     // WASM Installer functions
+    // It is possible to uplaod a WASM file to the canister and deploy the binary to the canisters
+
     type FileId = Types.FileId;
   type FileInfo = Types.FileInfo;
   type FileData = Types.FileData;

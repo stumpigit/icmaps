@@ -24,8 +24,9 @@ import WMTSGetCapabilitiesResponse "WMTSGetCapabilities";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WMTSServer.mo - OGC Compliant WMTS Server implementation for Internet Computer                      //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Author: Christoph Suter
-// Licence: MIT
+// Author: Christoph Suter                                                                             //
+// Licence: MIT                                                                                        //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 shared({caller = owner}) actor class WMTSServer() = this {
 
