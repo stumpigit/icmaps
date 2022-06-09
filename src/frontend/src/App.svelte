@@ -4,12 +4,10 @@
 
   // Admin Layout
   import Admin from "./layouts/Admin.svelte";
-  // Auth Layout
-  import Auth from "./layouts/Auth.svelte";
 
   // No Layout Pages
   import Index from "./views/Index.svelte";
-  import Samples from "./views/Samples.svelte";
+  import Samples from "./layouts/Samples.svelte";
   import WASMUploader from "views/admin/WASMUploader.svelte";
 
   export let url = "";
@@ -18,10 +16,9 @@
 <Router url="{url}">
   <!-- admin layout -->
   <Route path="admin/*admin" component="{Admin}" />
-  <!-- auth layout -->
-  <Route path="auth/*auth" component="{Auth}" />
+  <!-- admin layout -->
+  <Route path="samples/*samples" component="{Samples}" />
   <!-- no layout pages -->
   <Route path="/" component="{Index}" />
-  <Route path="/samples" component="{Samples}" />
   <Route path="/WASMUploader" component="{WASMUploader}" />
 </Router>

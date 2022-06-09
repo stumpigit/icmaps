@@ -77,7 +77,7 @@
       <h6
         class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
       >
-        ICMaps Settings
+        ICMaps Samples
       </h6>
       <!-- Navigation -->
 
@@ -85,13 +85,13 @@
         <li class="items-center">
           <a
             use:link
-            href="/admin/dashboard"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/admin/dashboard') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
+            href="/samples/simple"
+            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/simple') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
           >
             <i
-              class="fas fa-tv mr-2 text-sm {location.href.indexOf('/admin/dashboard') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+              class="fas fa-tv mr-2 text-sm {location.href.indexOf('/samples/simple') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
-            Dashboard
+            Simple Map
           </a>
         </li>
         <li class="items-center">
@@ -103,7 +103,7 @@
             <i
               class="fas fa-tv mr-2 text-sm {location.href.indexOf('/admin/canister') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
-            Canisters
+            Open Street Map
           </a>
         </li>
         <li class="items-center">
