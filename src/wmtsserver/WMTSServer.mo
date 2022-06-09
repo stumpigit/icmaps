@@ -30,7 +30,7 @@ import WMTSGetCapabilitiesResponse "WMTSGetCapabilities";
 
 shared({caller = owner}) actor class WMTSServer() = this {
 
-    let version = "0.0.3";
+    let version = "0.0.4";
 
     type Service = Types.Service;
     type FileId = Types.FileId;
@@ -526,6 +526,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
                 // parse query
                 let querys: Text = queryString(url);
                 let queryHashMap = queryMap(url);
+                let queryHashMapOrig = queryMap(req.url);
                 // GetCapabilities
                 if (Text.contains(url, #text "request=getcapabilities") == true) {
                     let myId: Principal = await idQuick();
@@ -554,7 +555,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
                     if (tilecol == "") errormsg := "No tilecol defined";
                     let tilerow = getParameterValue("tilerow", queryHashMap);
                     if (tilerow == "") errormsg := "No tilerow defined";
-                    let layer = getParameterValue("layer", queryHashMap);
+                    let layer = getParameterValue("layer", queryHashMapOrig);
                     if (layer == "") errormsg := "No layer defined";
                     let wmts_call: WMTSTile = {
                         version = version;
@@ -568,13 +569,15 @@ shared({caller = owner}) actor class WMTSServer() = this {
                         tileCol = textToNat(tilecol);
                     };
                     let toServeFile = await getWMTSFile(wmts_call);
+
+
                     let toServeFileNN: FileData =
                         switch (toServeFile) {
                             case null
                             return {
                                 status_code = 404;
                                 headers = [("content-type", "text/plain"),("Access-Control-Allow-Origin", "*")];
-                                body = "404 Tile Not found.\n/.\n";
+                                body = "404 Tile Not found \n/ .. \n";
                                 upgrade = false;
                                 streaming_strategy = null;
                             };

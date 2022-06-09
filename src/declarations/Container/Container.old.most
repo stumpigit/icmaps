@@ -1,7 +1,6 @@
 // Version: 1.0.0
 type Bucket =
   actor {
-    authorize : shared query Principal -> async Bool;
     generateRandom : shared Text -> async Text;
     getChunks : shared query (FileId__1, Nat) -> async ?Blob;
     getFileInfo : shared query FileId__1 -> async ?FileData__1;

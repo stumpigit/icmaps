@@ -10,6 +10,7 @@
   // pages for this layout
   import Dashboard from "views/samples/Dashboard.svelte";
   import Earthquake from "views/samples/Earthquake.svelte";
+  import Aletsch from "views/samples/Aletsch.svelte";
 
   export let location;
 
@@ -26,6 +27,7 @@
       <Router url="admin">
         <Route path="dashboard" component="{Dashboard}" />
         <Route path="earthquake" component="{Earthquake}" />
+        <Route path="aletsch" component="{Aletsch}" />
       </Router>
       <FooterAdmin />
     </div>

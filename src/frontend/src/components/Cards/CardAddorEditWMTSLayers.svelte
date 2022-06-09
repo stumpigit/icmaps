@@ -1,7 +1,11 @@
 <script>
   import { Map, View } from "ol";
   import { Tile as TileLayer } from "ol/layer";
-  import { defaults as defaultControls, ScaleLine, ZoomToExtent } from "ol/control";
+  import {
+    defaults as defaultControls,
+    ScaleLine,
+    ZoomToExtent,
+  } from "ol/control";
   import MultiSelect from "svelte-multiselect";
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import ProgressBar from "@okrad/svelte-progressbar";
@@ -36,8 +40,8 @@
   let client;
   export let tileURL =
     "https://geoserver.geobrowser.ch/geoserver/Aletsch/gwc/service/wmts?REQUEST=GetCapabilities";
-    let parsedGetCapabilities;
-    let layer;
+  let parsedGetCapabilities;
+  let layer;
   let tms;
   export let bbuppercornery = 46.8591;
   export let bbuppercornerx = 7.457;
@@ -54,12 +58,20 @@
   let selectedZoomLevels = [];
 
   $: {
-    //if ((parsedGetCapabilities!=null) && (bbuppercornerx!="") && (bbuppercornery!="") && (bblowercornerx!="") && (bblowercornery!="")) tmsURLSelected();
+    if (
+      parsedGetCapabilities != null &&
+      tms != null &&
+      bbuppercornerx != "" &&
+      bbuppercornery != "" &&
+      bblowercornerx != "" &&
+      bblowercornery != ""
+    )
+      tmsSelected();
   }
 
   function handleGetCapa() {
     fetch(tileURL, {
-      mode: "cors"
+      mode: "cors",
     })
       .then(function (response) {
         return response.text();
@@ -71,7 +83,9 @@
   }
 
   function tmsSelected() {
-    selectedTMS = parsedGetCapabilities.Contents.TileMatrixSet.find(e => e.Identifier == tms);
+    selectedTMS = parsedGetCapabilities.Contents.TileMatrixSet.find(
+      (e) => e.Identifier == tms
+    );
     console.log(selectedTMS);
     selectedTMSMultiSelectArray = [];
     selectedTMS.TileMatrix.forEach((tms) => {
@@ -96,23 +110,23 @@
 
   let selected;
   let myTMSSelected = [];
-  let selectedStrings = []
+  let selectedStrings = [];
   export let selectedTMSNumbers = [];
   $: {
-    if (selectedStrings.length==0) {
-    selectedStrings = [];
-    selectedTMSNumbers.forEach(tmsnumber => {
-      selectedStrings.push(tmsnumber.toString());
-    });
-    if (selectedTMS) zoomLevelsSelected();
-  }
+    if (selectedStrings.length == 0) {
+      selectedStrings = [];
+      selectedTMSNumbers.forEach((tmsnumber) => {
+        selectedStrings.push(tmsnumber.toString());
+      });
+      if (selectedTMS) zoomLevelsSelected();
+    }
   }
 
   function zoomLevelsSelected() {
     myTMSSelected = [];
     console.log("Selected change");
     console.log(selectedStrings);
-    
+
     selectedStrings.forEach((zoomLevel) => {
       let myZoomLevelTMS = selectedTMS.TileMatrix.find(
         (e) => e.Identifier == zoomLevel
@@ -151,47 +165,57 @@
   let myLayer;
   function layerSelected() {
     console.log(layer);
-    myLayer = parsedGetCapabilities.Contents.Layer.find(e => e.Identifier == layer);
-    bbuppercornerx = myLayer.WGS84BoundingBox[0];
-    bbuppercornery = myLayer.WGS84BoundingBox[1];
-    bblowercornerx = myLayer.WGS84BoundingBox[2];
-    bblowercornery = myLayer.WGS84BoundingBox[3];
+    myLayer = parsedGetCapabilities.Contents.Layer.find(
+      (e) => e.Identifier == layer
+    );
+    console.log("da noch");
+    try {
+      bbuppercornerx = myLayer.WGS84BoundingBox[0];
+      bbuppercornery = myLayer.WGS84BoundingBox[1];
+      bblowercornerx = myLayer.WGS84BoundingBox[2];
+      bblowercornery = myLayer.WGS84BoundingBox[3];
+    } catch (e) {
+      bbuppercornerx = 0;
+      bbuppercornery = 0;
+      bblowercornerx = 0;
+      bblowercornery = 0;
+    }
   }
 
   // upload
 
   export async function save() {
     client = await AuthClient.create();
-      if (await client.isAuthenticated()) {
-        setCanisterId(newlayercanister);
-        wmtsserver.update(() => ({
-          loggedIn: true,
-          actor: createWMTSActor({
-            agentOptions: {
-              identity: client.getIdentity(),
-            },
-          }),
-        }));
+    if (await client.isAuthenticated()) {
+      setCanisterId(newlayercanister);
+      wmtsserver.update(() => ({
+        loggedIn: true,
+        actor: createWMTSActor({
+          agentOptions: {
+            identity: client.getIdentity(),
+          },
+        }),
+      }));
 
-        let tilematrixsetcrs = "urn:ogc:def:crs:EPSG:3857";
-        let tilematrixset = await $wmtsserver.actor.getTileMatrixSetFromCRS(
-          tilematrixsetcrs
-        );
-        if (tilematrixset.Identifier == "NotFound") {
-          // error handling
-          console.log("TMS not found");
-        }
-        let saving = await $wmtsserver.actor.addLayer(
-          newlayerid,
-          newlayertitle,
-          "png",
-          tilematrixset.identifier,
-          bbuppercornerx + " " + bbuppercornery,
-          bblowercornerx + " " + bblowercornery,
-          tileURL
-        );
+      let tilematrixsetcrs = "urn:ogc:def:crs:EPSG:3857";
+      let tilematrixset = await $wmtsserver.actor.getTileMatrixSetFromCRS(
+        tilematrixsetcrs
+      );
+      if (tilematrixset.Identifier == "NotFound") {
+        // error handling
+        console.log("TMS not found");
       }
-  };
+      let saving = await $wmtsserver.actor.addLayer(
+        newlayerid,
+        newlayertitle,
+        "png",
+        tilematrixset.identifier,
+        bbuppercornerx + " " + bbuppercornery,
+        bblowercornerx + " " + bblowercornery,
+        tileURL
+      );
+    }
+  }
 
   export let progress = 0;
   let progressText = "Start seeding";
@@ -249,11 +273,13 @@
     let isRunning = true;
     //
 
-    let capaResource = myLayer.ResourceURL.find(x => x.format === 'image/png');
-console.log(capaResource);
-tilematrix
+    let capaResource = myLayer.ResourceURL.find(
+      (x) => x.format === "image/png"
+    );
+    console.log(capaResource);
+    tilematrix;
     let fetchUrl = capaResource.template
-      .replace(/http:/i,'https:')
+      .replace(/http:/i, "https:")
       .replace(/\{tilematrixset\}/i, selectedTMS.Identifier)
       .replace(/\{tilematrix\}/i, tilematrix)
       .replace(/\{tilecol\}/i, tilecol)
@@ -332,7 +358,7 @@ tilematrix
 
         isRunning = false;
       });
-      /*.catch(function (error) {
+    /*.catch(function (error) {
         console.log("Error in processing File: " + error);
         return false;
       });*/
@@ -355,53 +381,53 @@ tilematrix
     showModal = true;
 
     //try {
-      client = await AuthClient.create();
-      if (await client.isAuthenticated()) {
-        setCanisterId(newlayercanister);
-        wmtsserver.update(() => ({
-          loggedIn: true,
-          actor: createWMTSActor({
-            agentOptions: {
-              identity: client.getIdentity(),
-            },
-          }),
-        }));
+    client = await AuthClient.create();
+    if (await client.isAuthenticated()) {
+      setCanisterId(newlayercanister);
+      wmtsserver.update(() => ({
+        loggedIn: true,
+        actor: createWMTSActor({
+          agentOptions: {
+            identity: client.getIdentity(),
+          },
+        }),
+      }));
 
-        let tilematrixsetcrs = "urn:ogc:def:crs:EPSG:3857";
-        let tilematrixset = await $wmtsserver.actor.getTileMatrixSetFromCRS(
-          tilematrixsetcrs
-        );
-        if (tilematrixset.Identifier == "NotFound") {
-          // error handling
-          console.log("TMS not found");
-        }
-        console.log(tileURL);
+      let tilematrixsetcrs = "urn:ogc:def:crs:EPSG:3857";
+      let tilematrixset = await $wmtsserver.actor.getTileMatrixSetFromCRS(
+        tilematrixsetcrs
+      );
+      if (tilematrixset.Identifier == "NotFound") {
+        // error handling
+        console.log("TMS not found");
+      }
+      console.log(tileURL);
 
-        let saving = await $wmtsserver.actor.addLayer(
-          newlayerid,
-          newlayertitle,
-          "png",
-          tilematrixset.identifier,
-          bbuppercornerx + " " + bbuppercornery,
-          bblowercornerx + " " + bblowercornery,
-          tileURL
-        );
-        let tilerow;
-        let tilecol;
-        let todos = [];
-        current = 0;
+      let saving = await $wmtsserver.actor.addLayer(
+        newlayerid,
+        newlayertitle,
+        "png",
+        tilematrixset.identifier,
+        bbuppercornerx + " " + bbuppercornery,
+        bblowercornerx + " " + bblowercornery,
+        tileURL
+      );
+      let tilerow;
+      let tilecol;
+      let todos = [];
+      current = 0;
 
+      for (
+        tilecol = selectedZoom.topleftTileCol;
+        tilecol <= selectedZoom.bottomrightTileCol;
+        tilecol++
+      ) {
         for (
-          tilecol = selectedZoom.topleftTileCol;
-          tilecol <= selectedZoom.bottomrightTileCol;
-          tilecol++
+          tilerow = selectedZoom.bottomrightTileRow;
+          tilerow <= selectedZoom.topleftTileRow;
+          tilerow++
         ) {
-          for (
-            tilerow = selectedZoom.bottomrightTileRow;
-            tilerow <= selectedZoom.topleftTileRow;
-            tilerow++
-          ) {
-            if (!isCancel && !isError) 
+          if (!isCancel && !isError)
             todos.push(
               fetchImage(
                 selectedZoom,
@@ -412,15 +438,15 @@ tilematrix
                 selectedZoom.totalTiles
               )
             );
-            //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
-          }
-          if (!isCancel && !isError) await Promise.allSettled(todos);
-          todos = [];
+          //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
         }
-
-        if (!isCancel && !isError) await $wmtsserver.actor.updateStatus();
-        showModal = false;
+        if (!isCancel && !isError) await Promise.allSettled(todos);
+        todos = [];
       }
+
+      if (!isCancel && !isError) await $wmtsserver.actor.updateStatus();
+      showModal = false;
+    }
     /*} catch (e) {
       console.log("Error in Fetching: " + e);
 
@@ -486,17 +512,17 @@ tilematrix
               tilerow <= selectedZoom.topleftTileRow;
               tilerow++
             ) {
-              if (!isCancel && !isError) 
-              todos.push(
-                fetchImage(
-                  selectedZoom,
-                  tilematrixset.identifier,
-                  selectedZoom.Identifier,
-                  tilecol,
-                  tilerow,
-                  totaltiles
-                )
-              );
+              if (!isCancel && !isError)
+                todos.push(
+                  fetchImage(
+                    selectedZoom,
+                    tilematrixset.identifier,
+                    selectedZoom.Identifier,
+                    tilecol,
+                    tilerow,
+                    totaltiles
+                  )
+                );
               //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
             }
             if (!isCancel && !isError) await Promise.allSettled(todos);
@@ -507,7 +533,7 @@ tilematrix
           await $wmtsserver.actor.updateStatus();
         }
         showModal = false;
-     }
+      }
     } catch (e) {
       console.log("Error in Fetching: " + e);
 
@@ -576,7 +602,8 @@ tilematrix
         <label
           class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
           for="grid-username"
-        > {isEdit === true ? 'Layer identifier' : 'New layer identifier'}
+        >
+          {isEdit === true ? "Layer identifier" : "New layer identifier"}
         </label>
         <input
           id="layerid"
@@ -592,7 +619,7 @@ tilematrix
           class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
           for="grid-username"
         >
-        {isEdit === true ? 'Layer title' : 'New layer title'}
+          {isEdit === true ? "Layer title" : "New layer title"}
         </label>
         <input
           id="layerid"
@@ -610,7 +637,10 @@ tilematrix
         >
           Canister
         </label>
-        <select bind:value={newlayercanister} class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+        <select
+          bind:value={newlayercanister}
+          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+        >
           <option value="none"> Please select layer </option>
           {#each mycanisterArray as canister}
             <option value={canister.name}>
@@ -621,141 +651,142 @@ tilematrix
       </div>
     </div>
     {#if newlayerid && newlayercanister}
-    <div class="w-full lg:w-9/12 px-4">
-      <div class="relative w-full mb-3">
-        <label
-          class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-          for="grid-username"
-        >
-          GetCapabilities-Url
-        </label>
-        <input
-          id="grid-username"
-          type="text"
-          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-          bind:value={tileURL}
-        />
-      </div>
-    </div>
-    <div class="w-full lg:w-3/12 px-4">
-      <div class="relative w-full mt-8"><button
-        class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-        type="button"
-        on:click={handleGetCapa}
-      >
-        Get capabilities
-      </button></div>
-    </div>
-    {/if}
-  </div>
-  {#if parsedGetCapabilities != null}
-  <div class="flex flex-wrap">
-    <div class="w-full lg:w-6/12 px-4">
-      <div class="relative w-full mb-3">
-        <label
-          class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-          for="grid-username"
-        >
-          Layer
-        </label>
-        <select bind:value={layer} on:change={layerSelected}>
-          <option value="none">
-            Please select layer
-          </option>
-          {#each parsedGetCapabilities.Contents.Layer as layer}
-            <option value={layer.Identifier}>
-              {layer.Title}
-            </option>
-          {/each}
-        </select>
-      </div>
-    </div>
-    {#if myLayer != null && myLayer.TileMatrixSetLink != null && myLayer.TileMatrixSetLink.length > 0}
-    <div class="w-full lg:w-6/12 px-4">
-      <div class="relative w-full mb-3">
-        <label
-          class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-          for="grid-username"
-        >
-          TileMatrixSet
-        </label>
-        <select bind:value={tms} on:change={tmsSelected}>
-          <option value="">Select TileMatrixSet</option>
-          {#each myLayer.TileMatrixSetLink as tilematrixset}
-            <option value={tilematrixset.TileMatrixSet}>
-              {tilematrixset.TileMatrixSet}
-            </option>
-          {/each}
-        </select>
-      </div>
-    </div>
-    {/if}
-  </div>
-    <div class="flex flex-wrap">
-      <div class="w-full lg:w-3/12 px-4">
+      <div class="w-full lg:w-9/12 px-4">
         <div class="relative w-full mb-3">
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
           >
-            Bounding Box WGS 86 Min Lon
+            GetCapabilities-Url
           </label>
           <input
             id="grid-username"
             type="text"
             class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            bind:value={bbuppercornery}
+            bind:value={tileURL}
           />
         </div>
       </div>
       <div class="w-full lg:w-3/12 px-4">
+        <div class="relative w-full mt-8">
+          <button
+            class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+            type="button"
+            on:click={handleGetCapa}
+          >
+            Get capabilities
+          </button>
+        </div>
+      </div>
+    {/if}
+  </div>
+  {#if parsedGetCapabilities != null}
+    <div class="flex flex-wrap">
+      <div class="w-full lg:w-6/12 px-4">
         <div class="relative w-full mb-3">
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
-            >Min Lat
+          >
+            Layer
           </label>
-          <input
-            id="grid-username"
-            type="text"
-            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            bind:value={bbuppercornerx}
-          />
+          <select bind:value={layer} on:change={layerSelected}>
+            <option value="none"> Please select layer </option>
+            {#each parsedGetCapabilities.Contents.Layer as layer}
+              <option value={layer.Identifier}>
+                {layer.Title}
+              </option>
+            {/each}
+          </select>
         </div>
       </div>
-      <div class="w-full lg:w-3/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-            for="grid-username"
-            >Max Lon
-          </label>
-          <input
-            id="grid-username"
-            type="text"
-            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            bind:value={bblowercornery}
-          />
+      {#if myLayer != null && myLayer.TileMatrixSetLink != null && myLayer.TileMatrixSetLink.length > 0}
+        <div class="w-full lg:w-6/12 px-4">
+          <div class="relative w-full mb-3">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="grid-username"
+            >
+              TileMatrixSet
+            </label>
+            <select bind:value={tms} on:change={tmsSelected}>
+              <option value="">Select TileMatrixSet</option>
+              {#each myLayer.TileMatrixSetLink as tilematrixset}
+                <option value={tilematrixset.TileMatrixSet}>
+                  {tilematrixset.TileMatrixSet}
+                </option>
+              {/each}
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="w-full lg:w-3/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-            for="grid-username"
-            >Max Lat
-          </label>
-          <input
-            id="grid-username"
-            type="text"
-            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            bind:value={bblowercornerx}
-          />
-        </div>
-      </div>
+      {/if}
     </div>
     <!-- Zoom levels -->
     {#if selectedTMS != null && selectedTMS.TileMatrix != null}
+      <div class="flex flex-wrap">
+        <div class="w-full lg:w-3/12 px-4">
+          <div class="relative w-full mb-3">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="grid-username"
+            >
+              Bounding Box WGS 86 Min Lon
+            </label>
+            <input
+              id="grid-username"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              bind:value={bbuppercornery}
+            />
+          </div>
+        </div>
+        <div class="w-full lg:w-3/12 px-4">
+          <div class="relative w-full mb-3">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="grid-username"
+              >Min Lat
+            </label>
+            <input
+              id="grid-username"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              bind:value={bbuppercornerx}
+            />
+          </div>
+        </div>
+        <div class="w-full lg:w-3/12 px-4">
+          <div class="relative w-full mb-3">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="grid-username"
+              >Max Lon
+            </label>
+            <input
+              id="grid-username"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              bind:value={bblowercornery}
+            />
+          </div>
+        </div>
+        <div class="w-full lg:w-3/12 px-4">
+          <div class="relative w-full mb-3">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="grid-username"
+              >Max Lat
+            </label>
+            <input
+              id="grid-username"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              bind:value={bblowercornerx}
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="flex flex-wrap">
         <div class="w-full lg:w-3/12 px-4">
           <div class="relative w-full mb-3">

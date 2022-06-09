@@ -38,7 +38,6 @@ type FileData =
    z: nat;
  };
 service : {
-  authorize: (principal) -> (bool) query;
   generateRandom: (text) -> (text);
   getChunks: (FileId, nat) -> (opt blob) query;
   getFileInfo: (FileId) -> (opt FileData) query;

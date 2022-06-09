@@ -21,7 +21,8 @@ import { includes } from "ol/array";
   }
 
   async function handleSave() {
-    await osmEditor.save();
+    if (isosmedit) await osmEditor.save();
+    if (iswmtsedit) await wmtsEditor.save();
   }
 
   let isosmedit = false;

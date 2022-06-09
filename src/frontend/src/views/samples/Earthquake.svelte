@@ -2,12 +2,13 @@
   import Map from "ol/Map";
   import View from "ol/View";
   import TileLayer from "ol/layer/Tile";
-  import XYZ from "ol/source/XYZ";
+  import WMTS, { optionsFromCapabilities } from "ol/source/WMTS";
   import { fromLonLat } from "ol/proj";
   import WebGLPointsLayer from "ol/layer/WebGLPoints";
   import VectorSource from "ol/source/Vector";
   import Point from "ol/geom/Point";
   import Feature from "ol/Feature";
+  import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import { onMount } from "svelte";
 
   var view;
@@ -16,84 +17,106 @@
   var code = "";
 
   export function init() {
-    const layerStyle = {
-      variables: {
-        min: -Infinity,
-        max: Infinity,
-      },
-      filter: ["between", ["get", "date"], ["var", "min"], ["var", "max"]],
-      symbol: {
-        symbolType: "circle",
-        size: ["interpolate", ["linear"], ["get", "magnitude"], 2.5, 4, 5, 20],
-        color: [
-          "case",
-          ["<", ["get", "depth"], 0],
-          "rgb(223,22,172)",
-          "rgb(223,113,7)",
-        ],
-        opacity: 0.5,
-      },
-    };
-    const vectorLayer = new WebGLPointsLayer({
-      source: new VectorSource({
-        attributions: "USGS",
-      }),
-      style: layerStyle,
-    });
+    const parser = new WMTSCapabilities();
 
-    const view = new View({
-      center: fromLonLat([-122.297374, 37.355579]),
-      zoom: 5.55,
-    });
-    const olMap = new Map({
-      view,
-      target: "map",
-      layers: [
-        new TileLayer({
-          source: new XYZ({
-            urls: [
-              "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-              "https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-              "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-            ],
-            crossOrigin: "anonymous",
-          }),
-        }),
-        vectorLayer,
-      ],
-    });
-    // load map data
     fetch(
-      "https://raw.githubusercontent.com/uber-web/kepler.gl-data/master/earthquakes/data.csv"
+      "https://vk72n-daaaa-aaaak-aapuq-cai.raw.ic0.app/wmts?request=getcapabilitiess",
+      { mode: "cors" }
     )
-      .then((response) => response.text())
-      .then((csv) => {
-        var features = [];
-        var prevIndex = csv.indexOf("\n") + 1; // scan past the header line
-        var curIndex;
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (text) {
+        const result = parser.read(text);
+        console.log(result);
+        const options = optionsFromCapabilities(result, {
+          layer: "sample_earthquake",
+        });
+        
+        let iclayer = new TileLayer({
+          opacity: 1,
+          source: new WMTS(options),
+        });
 
-        while ((curIndex = csv.indexOf("\n", prevIndex)) !== -1) {
-          var line = csv.substr(prevIndex, curIndex - prevIndex).split(",");
-          prevIndex = curIndex + 1;
+        const layerStyle = {
+          variables: {
+            min: -Infinity,
+            max: Infinity,
+          },
+          filter: ["between", ["get", "date"], ["var", "min"], ["var", "max"]],
+          symbol: {
+            symbolType: "circle",
+            size: [
+              "interpolate",
+              ["linear"],
+              ["get", "magnitude"],
+              2.5,
+              4,
+              5,
+              20,
+            ],
+            color: [
+              "case",
+              ["<", ["get", "depth"], 0],
+              "rgb(223,22,172)",
+              "rgb(223,113,7)",
+            ],
+            opacity: 0.5,
+          },
+        };
+        const vectorLayer = new WebGLPointsLayer({
+          source: new VectorSource({
+            attributions: "USGS",
+          }),
+          style: layerStyle,
+        });
 
-          var coords = fromLonLat([parseFloat(line[2]), parseFloat(line[1])]);
-          if (isNaN(coords[0]) || isNaN(coords[1])) {
-            // guard against bad data
-            continue;
-          }
+        const view = new View({
+          center: fromLonLat([-119.796982,36.752089]),
+          zoom: 8,
+        });
+        const olMap = new Map({
+          view,
+          target: "map",
+          layers: [
+            iclayer,
+            vectorLayer,
+          ],
+        });
+        // load map data
+        fetch("/assets/samples/earthquake.csv")
+          .then((response) => response.text())
+          .then((csv) => {
+            var features = [];
+            var prevIndex = csv.indexOf("\n") + 1; // scan past the header line
+            var curIndex;
 
-          features.push(
-            new Feature({
-              date: new Date(line[0].replace(/\..+$/, "")), // remove trailing fraction in date
-              depth: parseInt(line[3]),
-              magnitude: parseInt(line[4]),
-              geometry: new Point(coords),
-              eventId: parseInt(line[11]),
-            })
-          );
-        }
+            while ((curIndex = csv.indexOf("\n", prevIndex)) !== -1) {
+              var line = csv.substr(prevIndex, curIndex - prevIndex).split(",");
+              prevIndex = curIndex + 1;
 
-        vectorLayer.getSource().addFeatures(features);
+              var coords = fromLonLat([
+                parseFloat(line[2]),
+                parseFloat(line[1]),
+              ]);
+              if (isNaN(coords[0]) || isNaN(coords[1])) {
+                // guard against bad data
+                continue;
+              }
+
+              features.push(
+                new Feature({
+                  date: new Date(line[0].replace(/\..+$/, "")), // remove trailing fraction in date
+                  depth: parseInt(line[3]),
+                  magnitude: parseInt(line[4]),
+                  geometry: new Point(coords),
+                  eventId: parseInt(line[11]),
+                })
+              );
+            }
+
+            vectorLayer.getSource().addFeatures(features);
+          });
       });
   }
   onMount(async () => {

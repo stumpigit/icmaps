@@ -48,7 +48,6 @@ type CanisterCycleInfo =
  };
 service : {
   addCanisterIdToBucketsList: (text) -> ();
-  authorize: (principal) -> (bool);
   getAllFiles: () -> (vec FileData);
   getCanisterCycleInfo: () -> (vec CanisterCycleInfo);
   getFileChunk: (FileId, nat, principal) -> (opt blob);
@@ -57,7 +56,6 @@ service : {
                           principal;
                           nat;
                         }) query;
-  get_controllers: () -> (vec principal);
   putFileChunks: (FileId, nat, nat, blob) -> (opt FileData);
   putFileInfo: (FileInfo) -> (opt FileId);
   updateCycles: () -> ();

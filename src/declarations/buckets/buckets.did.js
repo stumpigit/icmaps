@@ -36,7 +36,6 @@ export const idlFactory = ({ IDL }) => {
     'extension' : FileExtension,
   });
   const Bucket = IDL.Service({
-    'authorize' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
     'generateRandom' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getChunks' : IDL.Func(
         [FileId, IDL.Nat],

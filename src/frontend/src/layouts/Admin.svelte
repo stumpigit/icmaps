@@ -52,6 +52,7 @@ function toggleModal(){
     }
   });
   async function handleAuth() {
+    console.log("HandleAuth");
     backend.update(() => ({
       loggedIn: true,
       actor: createActor({
@@ -80,9 +81,13 @@ function toggleModal(){
 
 
   async function calcCanisterInfos() {
-    for (const canister of mycanistersarray)
+    console.log("CalcCanisterInfo");
+    console.log(mycanisters);
+    for (const canister of mycanisters)
     {
-      setCanisterId(canister.desc);
+      console.log(canister[1]);
+      let mycanisterInfo = canister[1];
+      setCanisterId(mycanisterInfo.canisterId);
       wmtsserver.update(() => ({
         loggedIn: true,
         actor: createWMTSActor({
@@ -96,18 +101,19 @@ function toggleModal(){
       
       let version = await $wmtsserver.actor.getVersion(); 
       
-      let mycanisterInfo = mycanisters.get(canister.desc.toText());
       mycanisterInfo.balance = BigInt(balance);
       mycanisterInfo.wmtsInfos = WMTSInfos;
       mycanisterInfo.version = version;
       let layerInfo = await $wmtsserver.actor.getLayerInfos();
       mycanisterInfo.layerInfo = layerInfo;
-      mycanisters.set(canister.desc.toText(), mycanisterInfo);
-      Dashboard.mycanisters = mycanisters;
-      mycanisters = mycanisters;
-      Dashboard.mycanisters = mycanisters;
-      console.log("Durch ein canister durch");
+      mycanisters.set(mycanisterInfo.canisterId.toText(), mycanisterInfo);
+
+      console.log("Durch ein canister durch;");
+      console.log(canister);
     };
+    Dashboard.mycanisters = mycanisters;
+    mycanisters = mycanisters;
+    Dashboard.mycanisters = mycanisters;
     
     showLoadingModal = false;
   }
