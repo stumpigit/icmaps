@@ -52,6 +52,7 @@ type Container =
    get_controllers: () -> (vec principal);
    putFileChunks: (FileId, nat, nat, blob) -> (opt FileData);
    putFileInfo: (FileInfo) -> (opt FileId);
+   removeFileInfo: (FileId, principal) -> (opt nat);
    updateCycles: () -> ();
    updateStatus: () -> ();
    wallet_balance: () -> (nat);

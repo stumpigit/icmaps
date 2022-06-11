@@ -43,10 +43,10 @@
   let parsedGetCapabilities;
   let layer;
   let tms;
-  export let bbuppercornery = 46.8591;
-  export let bbuppercornerx = 7.457;
-  export let bblowercornery = 46.8941;
-  export let bblowercornerx = 7.4923;
+  export let bbuppercornery;
+  export let bbuppercornerx;
+  export let bblowercornery;
+  export let bblowercornerx;
 
   let bbuppercornerx_tms;
   let bbuppercornery_tms;
@@ -60,13 +60,15 @@
   $: {
     if (
       parsedGetCapabilities != null &&
-      tms != null &&
-      bbuppercornerx != "" &&
-      bbuppercornery != "" &&
-      bblowercornerx != "" &&
-      bblowercornery != ""
+      tms != null && tms != "" &&
+      bbuppercornerx != null &&
+      bbuppercornery != null &&
+      bblowercornerx != null &&
+      bblowercornery != null
     )
+    {
       tmsSelected();
+    }
   }
 
   function handleGetCapa() {
@@ -170,15 +172,13 @@
     );
     console.log("da noch");
     try {
+      
       bbuppercornerx = myLayer.WGS84BoundingBox[0];
       bbuppercornery = myLayer.WGS84BoundingBox[1];
       bblowercornerx = myLayer.WGS84BoundingBox[2];
       bblowercornery = myLayer.WGS84BoundingBox[3];
     } catch (e) {
-      bbuppercornerx = 0;
-      bbuppercornery = 0;
-      bblowercornerx = 0;
-      bblowercornery = 0;
+      
     }
   }
 
@@ -268,7 +268,7 @@
     tilematrix,
     tilecol,
     tilerow,
-    totalTiles
+    totalTiles, overwrite=false
   ) {
     let isRunning = true;
     //
@@ -312,7 +312,7 @@
         };
         console.log(fileInfo);
         const fileId = (
-          await $wmtsserver.actor.putFileInfo(fileInfo, false)
+          await $wmtsserver.actor.putFileInfo(fileInfo, overwrite)
         )[0];
         current++;
 
@@ -375,7 +375,7 @@
 
   let current = 0;
 
-  async function handleSeed(selectedZoom) {
+  async function handleSeed(selectedZoom, overwrite = false) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
@@ -435,7 +435,7 @@
                 selectedZoom.Identifier,
                 tilecol,
                 tilerow,
-                selectedZoom.totalTiles
+                selectedZoom.totalTiles, overwrite
               )
             );
           //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -446,6 +446,7 @@
 
       if (!isCancel && !isError) await $wmtsserver.actor.updateStatus();
       showModal = false;
+      window.location.reload();
     }
     /*} catch (e) {
       console.log("Error in Fetching: " + e);
@@ -454,12 +455,12 @@
     }*/
   }
 
-  async function handleAllSeed() {
+  async function handleAllSeed(overwrite = false) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
 
-    try {
+    //try {
       client = await AuthClient.create();
       if (await client.isAuthenticated()) {
         setCanisterId(newlayercanister);
@@ -486,8 +487,8 @@
           newlayertitle,
           "png",
           tilematrixset.identifier,
-          bbuppercornerx + " " + bblowercornery,
-          bblowercornerx + " " + bblowercornery,
+        bbuppercornerx + " " + bbuppercornery,
+        bblowercornerx + " " + bblowercornery,
           tileURL
         );
         let tilerow;
@@ -520,7 +521,7 @@
                     selectedZoom.Identifier,
                     tilecol,
                     tilerow,
-                    totaltiles
+                    totaltiles, overwrite
                   )
                 );
               //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -533,12 +534,17 @@
           await $wmtsserver.actor.updateStatus();
         }
         showModal = false;
+        window.location.reload();
       }
-    } catch (e) {
+    /*} catch (e) {
       console.log("Error in Fetching: " + e);
 
       showModal = false;
-    }
+    }*/
+  }
+
+  function handleAllReseed() {
+    handleAllSeed(true);
   }
 </script>
 
@@ -951,6 +957,13 @@
                     >
                       Seed
                     </button>
+                    <button
+                      class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                      type="button"
+                      on:click={handleSeed(myTMSSelectedZoom, true)}
+                    >
+                      Reseed (Overwrite)
+                    </button>
                   </td>
                 </tr>
               {/each}
@@ -978,6 +991,13 @@
                     on:click={handleAllSeed}
                   >
                     Seed All
+                  </button>
+                  <button
+                    class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                    type="button"
+                    on:click={handleAllReseed}
+                  >
+                    Reseed All
                   </button>
                 </td>
               </tr>

@@ -137,6 +137,7 @@ export interface WMTSServer {
   'putFileInfo' : (arg_0: FileInfo, arg_1: boolean) => Promise<
       [] | [FileId__1]
     >,
+  'removeLayer' : (arg_0: string) => Promise<undefined>,
   'setWMTSParameters' : (arg_0: WMTS) => Promise<undefined>,
   'updateAllFiles' : () => Promise<undefined>,
   'updateStatus' : () => Promise<undefined>,

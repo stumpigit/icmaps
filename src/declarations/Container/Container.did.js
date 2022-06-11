@@ -66,6 +66,11 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'putFileInfo' : IDL.Func([FileInfo], [IDL.Opt(FileId)], []),
+    'removeFileInfo' : IDL.Func(
+        [FileId, IDL.Principal],
+        [IDL.Opt(IDL.Nat)],
+        [],
+      ),
     'updateCycles' : IDL.Func([], [], []),
     'updateStatus' : IDL.Func([], [], []),
     'wallet_balance' : IDL.Func([], [IDL.Nat], []),

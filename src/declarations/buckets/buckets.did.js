@@ -36,6 +36,7 @@ export const idlFactory = ({ IDL }) => {
     'extension' : FileExtension,
   });
   const Bucket = IDL.Service({
+    'authorize' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
     'generateRandom' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getChunks' : IDL.Func(
         [FileId, IDL.Nat],
@@ -51,6 +52,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'putFile' : IDL.Func([FileInfo], [IDL.Opt(FileId)], []),
+    'removeFile' : IDL.Func([FileId], [IDL.Opt(IDL.Nat)], []),
     'updateFileInfoData' : IDL.Func([FileId, FileData], [], ['oneway']),
     'wallet_balance' : IDL.Func([], [IDL.Nat], []),
     'wallet_receive' : IDL.Func(

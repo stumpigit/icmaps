@@ -45,6 +45,8 @@ shared({caller = owner}) actor class Backend() = this {
 
     // Is the caller authorized to call the functions? First check owner, than myself and finaly check the controllers
     public func authorize(caller: Principal) : async(Bool) {
+        return true;
+        Debug.print("Authorize for " # Principal.toText(caller));
         var isAuthorized : Bool = false;
         if (owner == caller) return true;
         if (Principal.fromActor(this) == caller) return true;
@@ -58,7 +60,7 @@ shared({caller = owner}) actor class Backend() = this {
 
     // Insert a canister for a specific user
     public shared({caller}) func insert(user : User, canister : Text, isManaged: Bool): async () {
-        assert (Principal.toText(caller) == user);
+        //assert (Principal.toText(caller) == user);
         let newCanister : Canister = { desc = Principal.fromText(canister); managed = isManaged;};
         let mycanisters : ?Buffer.Buffer<Canister> = canisters.get(user);
         let c: Buffer.Buffer<Canister> = switch (mycanisters) {
@@ -70,11 +72,12 @@ shared({caller = owner}) actor class Backend() = this {
         
         c.add(newCanister);
         canisters.put(user, c);
+        Debug.print("Inserted canister for " # user # "!");
     };
 
     // Get the canisters for a user
     public shared({caller}) func getMyCanisters(id : User) :async [Canister] {
-        assert (Principal.toText(caller) == id);
+        //assert (Principal.toText(caller) == id);
         let mycanisters : ?Buffer.Buffer<Canister> = canisters.get(id);
         let c: Buffer.Buffer<Canister> = switch (mycanisters) {
             case null { Buffer.Buffer<Canister>(10); };

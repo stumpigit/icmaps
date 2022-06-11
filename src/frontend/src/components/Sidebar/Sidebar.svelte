@@ -101,7 +101,7 @@
             class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/admin/canister') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
           >
             <i
-              class="fas fa-tv mr-2 text-sm {location.href.indexOf('/admin/canister') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+              class="fas fa-box mr-2 text-sm {location.href.indexOf('/admin/canister') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
             Canisters
           </a>
@@ -113,7 +113,7 @@
             class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/admin/layers') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
           >
             <i
-              class="fas fa-tools mr-2 text-sm {location.href.indexOf('/admin/layers') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+              class="fas fa-layer-group mr-2 text-sm {location.href.indexOf('/admin/layers') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
             Layers
           </a>
@@ -126,7 +126,7 @@
             class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/admin/preview') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
           >
             <i
-              class="fas fa-table mr-2 text-sm {location.href.indexOf('/admin/preview') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+              class="fas fa-map mr-2 text-sm {location.href.indexOf('/admin/preview') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
             Preview
           </a>
@@ -135,11 +135,11 @@
         <li class="items-center">
           <a
             use:link
-            href="/admin/maps"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/admin/maps') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
+            href="/samples/dashboard"
+            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/dashboard') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
           >
             <i
-              class="fas fa-map-marked mr-2 text-sm {location.href.indexOf('/admin/maps') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+              class="fas fa-map-marked mr-2 text-sm {location.href.indexOf('/samples/dashboard') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
             ></i>
             Maps
           </a>

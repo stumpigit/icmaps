@@ -417,6 +417,18 @@ shared({caller = owner}) actor class Container() = this {
             return await b.getFileInfo(fileId);
         }
     };
+
+    // remove the file
+    public shared({caller}) func removeFileInfo(fileId: FileId, cid: Principal): async ?Nat {
+        assert (await authorize(caller));
+        do ?{
+            let b: Bucket = (await getBucket(cid)) !;
+            Debug.print("Removing fileInfo " # fileId);
+            return await b.removeFile(fileId);
+            
+        };
+    };
+
     // get a list of files from all canisters
     public shared({caller}) func getAllFiles(): async [FileData] {
         assert (await authorize(caller));

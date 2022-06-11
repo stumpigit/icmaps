@@ -102,6 +102,14 @@ shared({caller = owner}) actor class Bucket () = this {
     }
   };
 
+  public func removeFile(fileId: FileId) : async ?Nat {
+    //assert (await authorize(caller));
+      state.chunks.delete(chunkId(fileId, 1));
+      state.files.delete(fileId);
+      Debug.print("Removing in Bucket " # fileId);
+      return ?1;
+  };
+
   func chunkId(fileId : FileId, chunkNum : Nat) : ChunkId {
       fileId # (Nat.toText(chunkNum))
   };

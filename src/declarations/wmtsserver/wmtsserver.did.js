@@ -156,6 +156,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'putFileInfo' : IDL.Func([FileInfo, IDL.Bool], [IDL.Opt(FileId__1)], []),
+    'removeLayer' : IDL.Func([IDL.Text], [], ['oneway']),
     'setWMTSParameters' : IDL.Func([WMTS], [], ['oneway']),
     'updateAllFiles' : IDL.Func([], [], []),
     'updateStatus' : IDL.Func([], [], []),

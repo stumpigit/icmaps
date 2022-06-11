@@ -9,6 +9,7 @@ type Bucket =
     getSize : shared () -> async Nat;
     putChunks : shared (FileId__1, Nat, Blob) -> async ?();
     putFile : shared FileInfo__1 -> async ?FileId__1;
+    removeFile : shared FileId__1 -> async ?Nat;
     updateFileInfoData : shared (FileId__1, FileData__1) -> ();
     wallet_balance : shared () -> async Nat;
     wallet_receive : shared () -> async {accepted : Nat64}

@@ -41,6 +41,7 @@
     "prismjs": "^1.28.0",
     "rollup-plugin-postcss": "^4.0.2",
     "sirv-cli": "1.0.11",
+    "svelte-error-message": "^1.0.1",
     "svelte-multiselect": "^5.0.1",
     "svelte-routing": "1.5.0",
     "tailwindcss": "2.0.4"

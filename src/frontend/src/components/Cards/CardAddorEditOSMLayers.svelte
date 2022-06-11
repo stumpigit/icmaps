@@ -218,7 +218,7 @@
     tilematrix,
     tilecol,
     tilerow,
-    totalTiles
+    totalTiles, overwrite = false
   ) {
     let isRunning = true;
     //
@@ -253,7 +253,7 @@
         };
         console.log(fileInfo);
         const fileId = (
-          await $wmtsserver.actor.putFileInfo(fileInfo, false)
+          await $wmtsserver.actor.putFileInfo(fileInfo, overwrite)
         )[0];
         current++;
 
@@ -316,7 +316,7 @@
 
   let current = 0;
 
-  async function handleSeed(selectedZoom) {
+  async function handleSeed(selectedZoom, overwrite = false) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
@@ -376,7 +376,7 @@
                 selectedZoom.Identifier,
                 tilecol,
                 tilerow,
-                selectedZoom.totalTiles
+                selectedZoom.totalTiles, overwrite
               )
             );
             //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -387,6 +387,7 @@
 
         if (!isCancel && !isError) await $wmtsserver.actor.updateStatus();
         showModal = false;
+        window.location.reload();
       }
     } catch (e) {
       console.log("Error in Fetching: " + e);
@@ -395,7 +396,7 @@
     }
   }
 
-  async function handleAllSeed() {
+  async function handleAllSeed(overwrite = false) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
@@ -427,9 +428,9 @@
           newlayertitle,
           "png",
           tilematrixset.identifier,
-          bbuppercornerx + " " + bblowercornery,
+          bbuppercornerx + " " + bbuppercornery,
           bblowercornerx + " " + bblowercornery,
-          tileURL
+          tileURL, overwrite
         );
         let tilerow;
         let tilecol;
@@ -461,7 +462,7 @@
                   selectedZoom.Identifier,
                   tilecol,
                   tilerow,
-                  totaltiles
+                  totaltiles, overwrite
                 )
               );
               //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -474,12 +475,16 @@
           await $wmtsserver.actor.updateStatus();
         }
         showModal = false;
+        window.location.reload();
      }
     } catch (e) {
       console.log("Error in Fetching: " + e);
 
       showModal = false;
     }
+  }
+  function handleAllReseed() {
+    handleAllSeed(true);
   }
 </script>
 
@@ -837,6 +842,13 @@
                     >
                       Seed
                     </button>
+                    <button
+                      class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                      type="button"
+                      on:click={handleSeed(myTMSSelectedZoom, true)}
+                    >
+                      Reseed (Overwrite)
+                    </button>
                   </td>
                 </tr>
               {/each}
@@ -864,6 +876,13 @@
                     on:click={handleAllSeed}
                   >
                     Seed All
+                  </button>
+                  <button
+                    class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                    type="button"
+                    on:click={handleAllReseed}
+                  >
+                    Reseed All
                   </button>
                 </td>
               </tr>

@@ -1,9 +1,10 @@
 <script>
   import { AuthClient } from "@dfinity/auth-client";
   import { navigate } from "svelte-routing";  
-import { backend,createActor } from "../../store/backend";
+  import { backend,createActor } from "../../store/backend";
   import { wmtsserver,createWMTSActor, setCanisterId, getWMTSParameters, WMTS } from "../../store/wmtsserver";
-
+  import  Error  from "components/Modals/Error.svelte";
+  
   let canisterId="";
   let isManaged;
 
@@ -14,6 +15,8 @@ import { backend,createActor } from "../../store/backend";
   }
 
   let client;
+
+  let error="";
 
   async function handleSave() {
 
@@ -30,10 +33,20 @@ import { backend,createActor } from "../../store/backend";
       }));
       let whoamivar = await $backend.actor.whoami();
 
+      try {
       await $backend.actor.installWMTSServer("v1", canisterId);
+      if (!isManaged) isManaged = false;
       await $backend.actor.insert(whoamivar.toText(), canisterId, isManaged);
-
+      
       navigate("/admin/dashboard", { replace: true });
+      }
+      catch (e)
+      {
+        showModal = false;
+        error = e.toString();
+        console.log(e);
+      }
+
       
     }
 
@@ -42,6 +55,7 @@ import { backend,createActor } from "../../store/backend";
 
 </script>
 
+<Error error={error} />
 {#if showModal}
 <div class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
   <div class="relative w-auto my-6 mx-auto max-w-sm">
@@ -94,7 +108,7 @@ import { backend,createActor } from "../../store/backend";
 
     <form>
       <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-        The canister have to exist already and have the backend as controller. Click here for help.
+        The canister have to exist already and have the backend (${process.env.BACKEND_CANISTER_ID}) as controller. For infos see below. All datas on the canister will be deleted.
       </h6>
       <div class="flex flex-wrap">
         <div class="w-full lg:w-6/12 px-4">
@@ -118,14 +132,16 @@ import { backend,createActor } from "../../store/backend";
               <input type="checkbox" bind:checked={isManaged} class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150">
               <span class="block uppercase text-blueGray-600 text-xs font-bold mb-1 ml-3">Managed Canister</span>
             </label>
-
-
           </div>
         </div>
+
+        
+
       </div>
     </form>
 
   </div>
 </div>
+
 
 

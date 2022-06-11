@@ -2,6 +2,7 @@
   // core components
   import CardCanisters from "components/Cards/CardCanisters.svelte";
   import CardAddCanister from "components/Cards/CardAddCanister.svelte";
+  import CardHowToAddCanister from "components/Cards/CardHowToAddCanister.svelte";
 
   import { Principal } from "@dfinity/principal";
   
@@ -14,7 +15,10 @@
   <div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4">
     <CardCanisters mycanisters={mycanisters}/>
   </div>
-  <div class="w-full lg:w-6/12 px-4">
+  <div class="w-full lg:w-12/12 px-4">
     <CardAddCanister mycanisters={mycanisters} />
+  </div>
+  <div class="w-full md:w-12/12 px-4">
+    <CardHowToAddCanister />
   </div>
 </div>

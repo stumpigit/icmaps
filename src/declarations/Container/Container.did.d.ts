@@ -23,6 +23,9 @@ export interface Container {
       arg_3: Array<number>,
     ) => Promise<[] | [FileData]>,
   'putFileInfo' : (arg_0: FileInfo) => Promise<[] | [FileId]>,
+  'removeFileInfo' : (arg_0: FileId, arg_1: Principal) => Promise<
+      [] | [bigint]
+    >,
   'updateCycles' : () => Promise<undefined>,
   'updateStatus' : () => Promise<undefined>,
   'wallet_balance' : () => Promise<bigint>,

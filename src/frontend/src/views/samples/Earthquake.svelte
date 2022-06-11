@@ -20,7 +20,7 @@
     const parser = new WMTSCapabilities();
 
     fetch(
-      "https://vk72n-daaaa-aaaak-aapuq-cai.raw.ic0.app/wmts?request=getcapabilitiess",
+      "https://oupjj-iiaaa-aaaal-aap5a-cai.raw.ic0.app/wmts?request=getcapabilitiess",
       { mode: "cors" }
     )
       .then(function (response) {
@@ -30,7 +30,7 @@
         const result = parser.read(text);
         console.log(result);
         const options = optionsFromCapabilities(result, {
-          layer: "sample_earthquake",
+          layer: "earthquake",
         });
         
         let iclayer = new TileLayer({

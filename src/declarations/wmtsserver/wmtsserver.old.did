@@ -165,6 +165,7 @@ service : {
   idQuick: () -> (principal);
   putFileChunks: (FileId__1, nat, nat, blob) -> ();
   putFileInfo: (FileInfo, bool) -> (opt FileId__1);
+  removeLayer: (text) -> () oneway;
   setWMTSParameters: (WMTS) -> () oneway;
   updateAllFiles: () -> ();
   updateStatus: () -> ();

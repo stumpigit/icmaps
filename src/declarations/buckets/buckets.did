@@ -39,6 +39,7 @@ type FileData =
  };
 type Bucket = 
  service {
+   authorize: (principal) -> (bool) query;
    generateRandom: (text) -> (text);
    getChunks: (FileId, nat) -> (opt blob) query;
    getFileInfo: (FileId) -> (opt FileData) query;
@@ -46,6 +47,7 @@ type Bucket =
    getSize: () -> (nat);
    putChunks: (FileId, nat, blob) -> (opt null);
    putFile: (FileInfo) -> (opt FileId);
+   removeFile: (FileId) -> (opt nat);
    updateFileInfoData: (FileId, FileData) -> () oneway;
    wallet_balance: () -> (nat);
    wallet_receive: () -> (record {accepted: nat64;});

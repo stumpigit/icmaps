@@ -30,7 +30,7 @@ import WMTSGetCapabilitiesResponse "WMTSGetCapabilities";
 
 shared({caller = owner}) actor class WMTSServer() = this {
 
-    let version = "0.0.4";
+    let version = "0.1.0";
 
     type Service = Types.Service;
     type FileId = Types.FileId;
@@ -54,6 +54,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
     type Container = Container.Container;
 
     var myContainer : [var ? Container] = Array.init(1,null);
+    //stable var myContainerPrincipal : ? Principal = ? Principal.fromText("vrmsk-7yaaa-aaaak-aaqtq-cai");
     stable var myContainerPrincipal : ? Principal = null;
     var layers: Types.Layers = HashMap.HashMap(5, Text.equal, Text.hash);
     stable var tilematrixsets : [var ? TileMatrixSet] = Array.init(10, null);
@@ -446,6 +447,36 @@ shared({caller = owner}) actor class WMTSServer() = this {
         tilematrixsets := tileMatrixSetsBuffer.toVarArray();
     };
     
+    public shared({caller}) func removeLayer(layerName: Text): () {
+        assert (await authorize(caller));
+        let isexistinglayer = layers.get(layerName);
+        switch (isexistinglayer)
+        {
+            case null {
+                return;
+            };
+            case (? isexistinglayer) {
+                let container : Container = await getOrSetContainer();
+                for (tilematrix in isexistinglayer.tilematrixes.vals()) 
+                {
+                    for (tilerow in tilematrix.vals())
+                    {
+                        for (tilecol in tilerow.vals())
+                        {
+                            for (format in tilecol.vals())
+                            {
+                                Debug.print(debug_show(format));
+                                let ok = await container.removeFileInfo(format.fileId, format.cid);
+
+                            };
+                        };
+                    };
+                };
+                layers.delete(layerName);
+            };
+        };
+        return;
+    };
 
     public shared({caller}) func addLayer(layerName: Text, layerTitle: Text, format: Text, tilematrix: Text, upperCorner: Text, lowerCorner: Text, url: Text): () {
         assert (await authorize(caller));
@@ -481,9 +512,6 @@ shared({caller = owner}) actor class WMTSServer() = this {
                 layers.put(layerName, newLayer);
             };
         };
-        
-
-        
     };
     
 

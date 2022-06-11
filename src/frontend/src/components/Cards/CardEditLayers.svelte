@@ -28,7 +28,7 @@ import { includes } from "ol/array";
   let isosmedit = false;
   let iswmtsedit = false;
   $: {
-    if (!url.toLowerCase().includes('getcapabilities')) isosmedit = true;
+    if ((!url.toLowerCase().includes('getcapabilities')) && (!url.toLowerCase().includes('capabilities.xml'))) isosmedit = true;
     else iswmtsedit = true;
   }
   
