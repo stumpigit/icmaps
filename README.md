@@ -16,7 +16,7 @@ Once your container is connected to ICMaps, you can easily transfer tiles from e
 ICMaps uses Motoko for the background processes and Svelte for frontend
 
 ### Parts
-CMaps consists of different sub-projects. These subprojects can be found in the src directory.
+ICMaps consists of different sub-projects. These subprojects can be found in the src directory.
 
 #### WMTS Server
 The WMTS server runs on canisters provided by the users. Once the WASM has been installed on a canister, layers and the associated tiles can be stored in it. The WMTS server independently organises the storage canisters and provides the tiles via HTTP requests. 
@@ -26,7 +26,6 @@ The frontend is accessible at [https://ICMaps.org](https://icmaps.org) and enabl
 
 #### Backend
 The backend is the storage interface for the frontend, where the user - canister relation is stored. In addition, new WMTS software versions are cached in this canister so that they can be applied to all managed canisters. 
-
 
 ## Getting Started
 
@@ -61,5 +60,59 @@ It's important that the backend is a controller of himself so we have to adjust 
     
 Congratulation, you should now have your first WMTS Canister in your canisters and are ready to add layers to it. But first you have to create the initial TileMatrixSet and Layer-Structure. In the ICMaps interface click on the canister and on the button "Refresh layer tree". 
 
+## Credits
+The code for the implementation of the decentralized storage of the images comes from [Motoko-CDN](https://github.com/gabrielnic/motoko-cdn) (Mini BigMap).
+For the svelte integration in IC Canister [Svelte Dapp with Motoko & Internet Identity
+](https://github.com/dfinity/examples/tree/master/svelte-motoko-starter) was used. 
+The template is from [Notus Svelte](https://github.com/creativetimofficial/notus-svelte) from Creative Tim.
 
-## Contributing
+Many thanks to many more forum writers on forum.dfinity.com
+
+
+## Contributing to ICMaps
+We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
+
+- Reporting a bug
+- Discussing the current state of the code
+- Submitting a fix
+- Proposing new features
+- Becoming a maintainer
+
+## We Develop with Github
+We use github to host code, to track issues and feature requests, as well as accept pull requests.
+
+## We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
+Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
+
+1. Fork the repo and create your branch from `master`.
+2. If you've added code that should be tested, add tests.
+3. If you've changed APIs, update the documentation.
+4. Ensure the test suite passes.
+5. Make sure your code lints.
+6. Issue that pull request!
+
+## Any contributions you make will be under the MIT Software License
+In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+
+## Report bugs using Github's [issues](https://github.com/stumpigit/icmaps/issues)
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
+
+## Write bug reports with detail, background, and sample code
+
+**Great Bug Reports** tend to have:
+
+- A quick summary and/or background
+- Steps to reproduce
+  - Be specific!
+  - Give sample code if you can. [My stackoverflow question](http://stackoverflow.com/q/12488905/180626) includes sample code that *anyone* with a base R setup can run to reproduce what I was seeing
+- What you expected would happen
+- What actually happens
+- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+
+People *love* thorough bug reports. I'm not even kidding.
+
+## License
+By contributing, you agree that your contributions will be licensed under its MIT License.
+
+## References
+This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md) and from [BrianDK](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
