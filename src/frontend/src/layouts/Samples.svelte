@@ -1,9 +1,12 @@
 <script>
   import { Router, Route } from "svelte-routing";
   import { navigate } from "svelte-routing";  
+  import { AuthClient } from "@dfinity/auth-client";
+  import { onMount } from "svelte";
   
   // components for this layout
   import SamplesNavbar from "components/Navbars/SamplesNavbar.svelte";
+  import Sidebar from "components/Sidebar/Sidebar.svelte";
   import HeaderStats from "components/Headers/HeaderStats.svelte";
   import SamplesSidebar from "components/Sidebar/SamplesSidebar.svelte";
   import FooterAdmin from "components/Footers/FooterAdmin.svelte";
@@ -13,14 +16,32 @@
   import Aletsch from "views/samples/Aletsch.svelte";
 
   export let location;
+  
+  let isLoggedIn = false;
+  let client;
+  onMount(async () => {
+    client = await AuthClient.create();
+    if (await client.isAuthenticated()) {
+      isLoggedIn = true;
+    }
+    else {
+      isLoggedIn = false;
+    }
+  });
 
 </script>
 
 
 <div>
+  {#if (isLoggedIn)}
+  <Sidebar location={location}/>
+  {:else}
   <SamplesSidebar location={location}/>
+  {/if}
   <div class="relative md:ml-64 bg-blueGray-100">
+
     <SamplesNavbar location="Samples"/>
+
     <HeaderStats />
 
     <div class="px-4 md:px-10 mx-auto w-full mt-6 pt-6">

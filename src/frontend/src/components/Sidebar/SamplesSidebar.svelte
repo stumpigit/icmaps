@@ -3,6 +3,7 @@
 
   // core components
   import UserDropdown from "components/Dropdowns/UserDropdown.svelte";
+  import Samples from "components/Sidebar/Samples.svelte";
   const logosmall = "../../assets/img/logo_small.png";
   let collapseShow = "hidden";
 
@@ -71,81 +72,8 @@
         </div>
       </div>
 
-      <!-- Divider -->
-      <hr class="my-4 md:min-w-full" />
-      <!-- Heading -->
-      <h6
-        class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-      >
-        ICMaps Samples
-      </h6>
-      <!-- Navigation -->
-
-      <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-        <li class="items-center">
-          <a
-            use:link
-            href="/samples/simple"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/simple') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
-          >
-            <i
-              class="fas fa-tv mr-2 text-sm {location.href.indexOf('/samples/simple') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
-            ></i>
-            Simple Map
-          </a>
-        </li>
-        <li class="items-center">
-          <a
-            use:link
-            href="/samples/osm"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/osm') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
-          >
-            <i
-              class="fas fa-tv mr-2 text-sm {location.href.indexOf('/samples/osm') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
-            ></i>
-            Open Street Map
-          </a>
-        </li>
-        <li class="items-center">
-          <a
-            use:link
-            href="/samples/earthquake"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/earthquake') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
-          >
-            <i
-              class="fas fa-tools mr-2 text-sm {location.href.indexOf('/samples/earthquake') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
-            ></i>
-            Earthquakes
-          </a>
-        </li>
-
-        <li class="items-center">
-          <a
-            use:link
-            href="/samples/aletsch"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/aletsch') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
-          >
-            <i
-              class="fas fa-table mr-2 text-sm {location.href.indexOf('/samples/aletsch') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
-            ></i>
-            Climate change
-          </a>
-        </li>
-
-        <li class="items-center">
-          <a
-            use:link
-            href="/samples/qgis"
-            class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/qgis') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
-          >
-            <i
-              class="fas fa-map-marked mr-2 text-sm {location.href.indexOf('/samples/qgis') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
-            ></i>
-            QGIS
-          </a>
-        </li>
-      </ul>
-
+      <Samples />
+     
       <!-- Divider -->
       <hr class="my-4 md:min-w-full" />
       <!-- Heading -->
@@ -161,7 +89,7 @@
           <a
             use:link
             class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-            href="/auth/login"
+            href="https://internetcomputer.org/" target="_blank"
           >
             <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
             About IC
@@ -172,7 +100,7 @@
           <a
             use:link
             class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-            href="/auth/register"
+            href="https://github.com/stumpigit/icmaps" target="_blank"
           >
             <i class="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"></i>
             About ICMaps

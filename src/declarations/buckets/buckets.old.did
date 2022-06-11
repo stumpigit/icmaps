@@ -46,7 +46,7 @@ service : {
   getSize: () -> (nat);
   putChunks: (FileId, nat, blob) -> (opt null);
   putFile: (FileInfo) -> (opt FileId);
-  removeFile: (FileId) -> (opt nat);
+  removeFile: (FileId) -> (opt nat) query;
   updateFileInfoData: (FileId, FileData) -> () oneway;
   wallet_balance: () -> (nat);
   wallet_receive: () -> (record {accepted: nat64;});

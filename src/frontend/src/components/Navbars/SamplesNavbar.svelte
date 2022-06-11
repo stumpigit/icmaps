@@ -16,7 +16,7 @@
       class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
       href="#pablo" on:click={(e) => e.preventDefault()}
     >
-      {location}
+      Samples
     </a>
     <!-- Form -->
     <form
@@ -27,7 +27,7 @@
       </div>
     </form>
     <!-- User -->
-    <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+    <ul class="flex-col md:flex-row list-none items-center hidden md:flex" style="height:30px;">
 
     </ul>
   </div>
