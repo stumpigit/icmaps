@@ -9,6 +9,8 @@
   import {Vector as VectorLayer} from 'ol/layer';
   import TileLayer from "ol/layer/Tile";
   import KML from 'ol/format/KML';
+  import Style from 'ol/style/Style';
+  import Icon from 'ol/style/Icon';
 
   var view;
   var center;
@@ -17,12 +19,39 @@
   export function init() {
     const parser = new WMTSCapabilities();
 
-    const markerLayer = new VectorLayer({
+    var markerLayer = new VectorLayer({
       source: new VectorSource({
         url: '/assets/samples/dfinity_foundation.kml',
         format: new KML(),
+      })
+    });
+
+    const iconStyle = new Style({
+      image: new Icon({
+        anchorOrigin: 'bottom-left',
+        anchor: [0.5, -5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        src: 'https://5yimg-viaaa-aaaak-aareq-cai.raw.ic0.app/assets/samples/dfinity_marker_small.png',
       }),
     });
+
+    markerLayer.getSource().on('addfeature', function(evt) {
+
+      var feature = evt.feature;
+      feature.setStyle(iconStyle);
+
+      });
+
+    /*markerLayer.setStyle(
+      new Style({
+        image: new Icon({
+          src: 'https://5yimg-viaaa-aaaak-aareq-cai.raw.ic0.app/assets/samples/dfinity_marker.png',
+          anchor: [0.5, 1],
+          scale: 10
+        })
+      })
+    );*/
 
     fetch(
       "https://vk72n-daaaa-aaaak-aapuq-cai.raw.ic0.app/wmts?request=getcapabilitiess",
