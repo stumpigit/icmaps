@@ -60,15 +60,6 @@ It's important that the backend is a controller of himself so we have to adjust 
     
 Congratulation, you should now have your first WMTS Canister in your canisters and are ready to add layers to it. But first you have to create the initial TileMatrixSet and Layer-Structure. In the ICMaps interface click on the canister and on the button "Refresh layer tree". 
 
-## Credits
-The code for the implementation of the decentralized storage of the images comes from [Motoko-CDN](https://github.com/gabrielnic/motoko-cdn) (Mini BigMap).
-For the svelte integration in IC Canister [Svelte Dapp with Motoko & Internet Identity
-](https://github.com/dfinity/examples/tree/master/svelte-motoko-starter) was used. 
-The template is from [Notus Svelte](https://github.com/creativetimofficial/notus-svelte) from Creative Tim.
-
-Many thanks to many more forum writers on forum.dfinity.com
-
-
 ## Contributing to ICMaps
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
@@ -78,10 +69,10 @@ We love your input! We want to make contributing to this project as easy and tra
 - Proposing new features
 - Becoming a maintainer
 
-## We Develop with Github
+# We Develop with Github
 We use github to host code, to track issues and feature requests, as well as accept pull requests.
 
-## We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
+# We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
 
 1. Fork the repo and create your branch from `master`.
@@ -91,13 +82,13 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 5. Make sure your code lints.
 6. Issue that pull request!
 
-## Any contributions you make will be under the MIT Software License
+# Any contributions you make will be under the MIT Software License
 In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/stumpigit/icmaps/issues)
+# Report bugs using Github's [issues](https://github.com/stumpigit/icmaps/issues)
 We use GitHub issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
 
-## Write bug reports with detail, background, and sample code
+# Write bug reports with detail, background, and sample code
 
 **Great Bug Reports** tend to have:
 
@@ -111,8 +102,14 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 
 People *love* thorough bug reports. I'm not even kidding.
 
-## License
+# License
 By contributing, you agree that your contributions will be licensed under its MIT License.
 
-## References
-This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md) and from [BrianDK](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
+## Credits
+- The code for the implementation of the decentralized storage of the images comes from [Motoko-CDN](https://github.com/gabrielnic/motoko-cdn) (Mini BigMap).
+- For the svelte integration in IC Canister [Svelte Dapp with Motoko & Internet Identity
+](https://github.com/dfinity/examples/tree/master/svelte-motoko-starter) was used. 
+- The template is from [Notus Svelte](https://github.com/creativetimofficial/notus-svelte) from Creative Tim.
+- The Part Contributing in this document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md) and from [BrianDK](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
+
+- Many thanks to many more forum writers on forum.dfinity.com
