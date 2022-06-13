@@ -108,7 +108,7 @@
 
     <form>
       <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-        The canister have to exist already and have the backend (${process.env.BACKEND_CANISTER_ID}) as controller. For infos see below. All datas on the canister will be deleted.
+        The canister have to exist already and have the backend ({process.env.BACKEND_CANISTER_ID}) as controller. For infos see below. All datas on the canister will be deleted.
       </h6>
       <div class="flex flex-wrap">
         <div class="w-full lg:w-6/12 px-4">

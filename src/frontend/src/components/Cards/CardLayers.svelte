@@ -28,7 +28,7 @@
 >
     <div class="rounded-t bg-white mb-0 px-6 py-6 bg-blueGray-400">
       <div class="text-center flex justify-between">
-        <h6 class="text-white text-xl font-bold">Existing layers</h6>
+        <h6 class="text-white text-xl font-bold">Your layers</h6>
       </div>
     </div>
   <div class="block w-full overflow-x-auto">
@@ -94,7 +94,7 @@
           <td
           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
         >
-        <a class="text-color-blue" href="/admin/preview/{mycanister.name}/{value.identifier}" use:link>Preview Layer</a>
+        <a class="text-color-blue font-semibold" href="/admin/preview/{mycanister.name}/{value.identifier}" use:link>Preview Layer</a>
         </td>
         {/if}
 

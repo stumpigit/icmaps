@@ -6,6 +6,7 @@
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import ProgressBar from "@okrad/svelte-progressbar";
   import { AuthClient } from "@dfinity/auth-client";
+  import  Error  from "components/Modals/Error.svelte";
   import {
     wmtsserver,
     createWMTSActor,
@@ -25,6 +26,7 @@
   export let newlayerid;
   export let newlayertitle;
   export let newlayercanister;
+  let error = "";
 
   let mycanisterArray = [];
   $: {
@@ -232,6 +234,7 @@
         if (!response.ok) {
           console.log("Error while fetching: ");
           console.log(response);
+
           isRunning = false;
           return false;
         }
@@ -301,6 +304,7 @@
       })
       .catch(function (error) {
         console.log("Error in processing File: " + error);
+        error = error.toString();
         return false;
       });
     while (isRunning) {}
@@ -391,7 +395,7 @@
       }
     } catch (e) {
       console.log("Error in Fetching: " + e);
-
+      error = e.toString()
       showModal = false;
     }
   }
@@ -480,6 +484,7 @@
     } catch (e) {
       console.log("Error in Fetching: " + e);
 
+      error = e.toString()
       showModal = false;
     }
   }
