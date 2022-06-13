@@ -434,7 +434,7 @@
           tilematrixset.identifier,
           bbuppercornerx + " " + bbuppercornery,
           bblowercornerx + " " + bblowercornery,
-          tileURL, overwrite
+          tileURL
         );
         let tilerow;
         let tilecol;
