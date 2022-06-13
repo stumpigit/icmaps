@@ -14,6 +14,7 @@
   import Dashboard from "views/samples/Dashboard.svelte";
   import Earthquake from "views/samples/Earthquake.svelte";
   import Aletsch from "views/samples/Aletsch.svelte";
+  import OSM_Sample from "views/samples/OSM_Sample.svelte";
 
   export let location;
   
@@ -49,6 +50,7 @@
         <Route path="dashboard" component="{Dashboard}" />
         <Route path="earthquake" component="{Earthquake}" />
         <Route path="aletsch" component="{Aletsch}" />
+        <Route path="osm" component="{OSM_Sample}" />
       </Router>
       <FooterAdmin />
     </div>
