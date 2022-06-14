@@ -35,15 +35,15 @@
         });
 
         const view = new View({
-          maxZoom: 18,
-          minZoom: 15,
-          zoom: 17,
-          center: fromLonLat([8.534145,47.368286]),
+          maxZoom: 16,
+          minZoom: 10,
+          zoom: 16,
+          center: fromLonLat([7.696738,46.025843]),
         });
         const olMap = new Map({
           view,
           target: "map",
-          layers: [iclayer, markerLayer],
+          layers: [iclayer],
         });
       });
   }
