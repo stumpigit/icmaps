@@ -10,6 +10,7 @@
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import ProgressBar from "@okrad/svelte-progressbar";
   import { AuthClient } from "@dfinity/auth-client";
+  import  Error  from "components/Modals/Error.svelte";
   import {
     wmtsserver,
     createWMTSActor,
@@ -29,6 +30,7 @@
   export let newlayerid;
   export let newlayertitle;
   export let newlayercanister;
+  let error = "";
 
   let mycanisterArray = [];
   $: {
@@ -357,11 +359,11 @@
         }
 
         isRunning = false;
-      });
-    /*.catch(function (error) {
+      })
+      .catch(function (error) {
         console.log("Error in processing File: " + error);
         return false;
-      });*/
+      });
     while (isRunning) {}
     return true;
   }
@@ -380,7 +382,7 @@
     progressText = "Starting";
     showModal = true;
 
-    //try {
+    try {
     client = await AuthClient.create();
     if (await client.isAuthenticated()) {
       setCanisterId(newlayercanister);
@@ -448,19 +450,19 @@
       showModal = false;
       window.location.reload();
     }
-    /*} catch (e) {
+    } catch (e) {
       console.log("Error in Fetching: " + e);
-
+      error = e.toString();
       showModal = false;
-    }*/
+    }
   }
 
-  async function handleAllSeed(overwrite = false) {
+  async function handleAllSeed(overwrite) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
 
-    //try {
+    try {
       client = await AuthClient.create();
       if (await client.isAuthenticated()) {
         setCanisterId(newlayercanister);
@@ -536,11 +538,11 @@
         showModal = false;
         window.location.reload();
       }
-    /*} catch (e) {
+    } catch (e) {
       console.log("Error in Fetching: " + e);
-
+      error = e.toString();
       showModal = false;
-    }*/
+    }
   }
 
   function handleAllReseed() {
@@ -988,7 +990,7 @@
                   <button
                     class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                     type="button"
-                    on:click={handleAllSeed}
+                    on:click={handleAllSeed("Hallo", false)}
                   >
                     Seed All
                   </button>

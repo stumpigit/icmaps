@@ -33,7 +33,7 @@
        class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/osm') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
      >
        <i
-         class="fas fa-map-pin mr-2 text-sm {location.href.indexOf('/samples/osm') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+         class="fas fa-map-marked mr-2 text-sm {location.href.indexOf('/samples/osm') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
        ></i>
        Open Street Map
      </a>
@@ -71,7 +71,7 @@
        class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/qgis') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
      >
        <i
-         class="fas fa-map-marked mr-2 text-sm {location.href.indexOf('/samples/qgis') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+         class="fas fa-toolbox mr-2 text-sm {location.href.indexOf('/samples/qgis') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
        ></i>
        QGIS
      </a>

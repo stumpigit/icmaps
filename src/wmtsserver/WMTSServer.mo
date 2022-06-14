@@ -842,7 +842,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
                 # parameter);
             let paramPart = Text.split(parameter, #char '=');
             let peramPartArray = Iter.toArray <Text> (paramPart);
-            queryHashMap.put(peramPartArray[0], peramPartArray[1]);
+            queryHashMap.put(Text.map(peramPartArray[0], Prim.charToLower), peramPartArray[1]);
         };
         return queryHashMap;
     };

@@ -37,7 +37,7 @@
 
     <script>
       if (process === undefined) {
-        var process = { env: {} };
+        var process = { env: {PRODUCTION: true} };
       }
     </script>
     <script defer src="/build/bundle.js"></script>

@@ -304,7 +304,7 @@
       })
       .catch(function (error) {
         console.log("Error in processing File: " + error);
-        error = error.toString();
+        //error = error.toString();
         return false;
       });
     while (isRunning) {}
@@ -395,12 +395,12 @@
       }
     } catch (e) {
       console.log("Error in Fetching: " + e);
-      error = e.toString()
+      error = e.toString();
       showModal = false;
     }
   }
 
-  async function handleAllSeed(overwrite = false) {
+  async function handleAllSeed(hallo, overwrite) {
     progress = 0;
     progressText = "Starting";
     showModal = true;
@@ -446,7 +446,7 @@
         for (var sz of myTMSSelected) {
           totaltiles += sz.totalTiles;
         }
-
+        console.log(myTMSSelected);
         for (var selectedZoom of myTMSSelected) {
           for (
             tilecol = selectedZoom.topleftTileCol;
@@ -466,7 +466,7 @@
                   selectedZoom.Identifier,
                   tilecol,
                   tilerow,
-                  totaltiles, overwrite
+                  selectedZoom.totalTiles, overwrite
                 )
               );
               //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -483,16 +483,16 @@
      }
     } catch (e) {
       console.log("Error in Fetching: " + e);
-
-      error = e.toString()
+      error = e.toString();
       showModal = false;
     }
   }
   function handleAllReseed() {
-    handleAllSeed(true);
+    handleAllSeed("Bello", true);
   }
 </script>
 
+<Error error={error} />
 {#if showModal}
   <div
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex "
@@ -878,7 +878,7 @@
                   <button
                     class="bg-blue-400 text-white active:bg-blue-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                     type="button"
-                    on:click={handleAllSeed}
+                    on:click={() =>  handleAllSeed("HallO", false)}
                   >
                     Seed All
                   </button>
