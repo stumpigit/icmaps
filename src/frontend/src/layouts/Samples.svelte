@@ -16,6 +16,7 @@
   import Aletsch from "views/samples/Aletsch.svelte";
   import OSM_Sample from "views/samples/OSM_Sample.svelte";
   import Simple from "views/samples/Simple.svelte";
+  import QGIS from "views/samples/QGIS.svelte";
 
   export let location;
   
@@ -53,6 +54,7 @@
         <Route path="aletsch" component="{Aletsch}" />
         <Route path="osm" component="{OSM_Sample}" />
         <Route path="simple" component="{Simple}" />
+        <Route path="qgis" component="{QGIS}" />
       </Router>
       <FooterAdmin />
     </div>
