@@ -37,8 +37,8 @@
       await $backend.actor.installWMTSServer("v1", canisterId);
       if (!isManaged) isManaged = false;
       await $backend.actor.insert(whoamivar.toText(), canisterId, isManaged);
-      
-      navigate("/admin/dashboard", { replace: true });
+
+      window.location.reload();
       }
       catch (e)
       {

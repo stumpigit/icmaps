@@ -11,6 +11,7 @@
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import { onMount } from "svelte";
   import { getRenderPixel } from "ol/render";
+  import {Attribution, defaults as defaultControls} from 'ol/control';
 
   var view;
   var center;
@@ -23,9 +24,14 @@
       center: fromLonLat([8.03504, 46.49981]),
       zoom: 14,
     });
+    
+    const attribution = new Attribution({
+      collapsible: false,
+    });
     const olMap = new Map({
       view,
       target: "map",
+      controls: defaultControls({attribution: false}).extend([attribution])
     });
 
     const swipe = document.getElementById("swipe");
@@ -65,9 +71,12 @@
               layer: "Aletsch2021",
             });
 
+            const aletsch21_source = new WMTS(aletsch21);
+            aletsch21_source.setAttributions(['© Copernicus Sentinel data 2016, 2021 processed by Sentinel Hub']);
+
             let aletsch21Layer = new TileLayer({
               opacity: 1,
-              source: new WMTS(aletsch21),
+              source: aletsch21_source,
             });
 
             olMap.addLayer(aletsch21Layer);

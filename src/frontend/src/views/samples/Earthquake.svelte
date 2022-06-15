@@ -10,6 +10,8 @@
   import Feature from "ol/Feature";
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import { onMount } from "svelte";
+  import {ATTRIBUTION as osmAttribution} from 'ol/source/OSM';
+  import {Attribution, defaults as defaultControls} from 'ol/control';
 
   var view;
   var center;
@@ -32,10 +34,11 @@
         const options = optionsFromCapabilities(result, {
           layer: "earthquake",
         });
-        
+        const osm_source = new WMTS(options);
+        osm_source.setAttributions([osmAttribution]);
         let iclayer = new TileLayer({
           opacity: 1,
-          source: new WMTS(options),
+          source: osm_source,
         });
 
         const layerStyle = {
@@ -66,7 +69,7 @@
         };
         const vectorLayer = new WebGLPointsLayer({
           source: new VectorSource({
-            attributions: "USGS",
+            attributions: "Earthquakes: USGS",
           }),
           style: layerStyle,
         });
@@ -75,6 +78,9 @@
           center: fromLonLat([-119.796982,36.752089]),
           zoom: 8,
         });
+        const attribution = new Attribution({
+          collapsible: false,
+        });
         const olMap = new Map({
           view,
           target: "map",
@@ -82,6 +88,7 @@
             iclayer,
             vectorLayer,
           ],
+          controls: defaultControls({attribution: false}).extend([attribution])
         });
         // load map data
         fetch("/assets/samples/earthquake.csv")
@@ -124,11 +131,28 @@
   });
 </script>
 
-<div>
-  <div class="flex flex-wrap">
-    <div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4">
+<div class="flex flex-wrap">
+  <div class="w-full xl:w-12/12 mb-12 xl:mb-0 px-4">
+    <div
+      class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg  bg-white border-0"
+    >
+      <div class="rounded-t bg-white mb-0 px-6 py-6 bg-blueGray-400">
+        <div class="text-center flex justify-between">
+          <h6 class="text-white text-xl font-bold">Earthquakes</h6>
+        </div>
+      </div>
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+        <div class="flex flex-wrap">
+          <div class="w-full pt-3">
+            <p class="text-lg font-light leading-relaxed mt-6 mb-4">
+              The dataset contains a list of 2.5+ magnitude earthquakes in california. Information was generated using USGS website and contains multiple properties (location, magnitude, magtype) for each single entry. Data source: <a class="text-sky-900 hover:text-gray-400 underline decoration-sky-500/30" href="https://earthquake.usgs.gov/data/data.php">USGS</a> and <a class="text-sky-900 hover:text-gray-400 underline decoration-sky-500/30" href="https://github.com/uber-web/kepler.gl-data">kepler.gl-data</a>. In this example the data is laoded as CSV from asset canister.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div
-        class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+        class="flex break-words bg-white shadow-lg rounded mb-6 mx-4"
       >
         <div id="map" class="relative w-full rounded h-600-px" />
       </div>

@@ -11,6 +11,8 @@
   import KML from "ol/format/KML";
   import Style from "ol/style/Style";
   import Icon from "ol/style/Icon";
+  import {ATTRIBUTION as osmAttribution} from 'ol/source/OSM';
+  import {Attribution, defaults as defaultControls} from 'ol/control';
 
   var view;
   var center;
@@ -57,9 +59,15 @@
           layer: "osm_dfinity",
         });
 
+        const osm_source = new WMTS(options);
+        osm_source.setAttributions([osmAttribution]);
+
         let iclayer = new TileLayer({
           opacity: 1,
-          source: new WMTS(options),
+          source: osm_source,
+        });
+        const attribution = new Attribution({
+          collapsible: false,
         });
 
         const view = new View({
@@ -72,6 +80,7 @@
           view,
           target: "map",
           layers: [iclayer, markerLayer],
+          controls: defaultControls({attribution: false}).extend([attribution])
         });
       });
   }

@@ -341,7 +341,7 @@ shared({caller = owner}) actor class Backend() = this {
                     case ( ? wasmblob) {
                         await (IC.install_code({
                             canister_id = Principal.fromText(canisterId);
-                            mode = #install;
+                            mode = #reinstall;
                             wasm_module =  Blob.toArray(wasmblob);
                             arg = [];
                         }));

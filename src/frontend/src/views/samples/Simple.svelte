@@ -6,7 +6,7 @@
   import { fromLonLat } from "ol/proj";
   import WMTSCapabilities from "ol/format/WMTSCapabilities";
   import TileLayer from "ol/layer/Tile";
-
+  import {Attribution, defaults as defaultControls} from 'ol/control';
 
   var view;
   var center;
@@ -29,11 +29,16 @@
           layer: "swisstopo_pk",
         });
 
+        const swisstopo_source = new WMTS(options);
+        swisstopo_source.setAttributions(['© <a href="https://www.swisstopo.ch">swisstopo</a>']);
+
         let iclayer = new TileLayer({
           opacity: 1,
-          source: new WMTS(options),
+          source: swisstopo_source,
         });
-
+        const attribution = new Attribution({
+          collapsible: false,
+        });
         const view = new View({
           maxZoom: 16,
           minZoom: 10,
@@ -44,6 +49,7 @@
           view,
           target: "map",
           layers: [iclayer],
+          controls: defaultControls({attribution: false}).extend([attribution])
         });
       });
   }

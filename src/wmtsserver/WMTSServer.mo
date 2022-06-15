@@ -30,7 +30,7 @@ import WMTSGetCapabilitiesResponse "WMTSGetCapabilities";
 
 shared({caller = owner}) actor class WMTSServer() = this {
 
-    let version = "0.1.0";
+    let version = "1.0.0";
 
     type Service = Types.Service;
     type FileId = Types.FileId;
