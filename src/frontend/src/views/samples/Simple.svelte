@@ -66,7 +66,7 @@
         <div class="flex flex-wrap">
           <div class="w-full pt-3">
             <p class="text-lg font-light leading-relaxed mt-6 mb-4">
-              As a simple example, a map of the Swiss Alps is loaded here. The maps are from <a href="swisstopo.ch" target="_blank">swisstopo</a>, the Federal Office of Topography swisstopo. These wonderful maps are available as Opendata.
+              As a simple example, a map of the Swiss Alps is loaded here. The maps are from <a class="text-sky-900 hover:text-gray-400 underline decoration-sky-500/30" href="swisstopo.ch" target="_blank">swisstopo</a>, the Federal Office of Topography swisstopo. These wonderful maps are available as Opendata.
             </p>
           </div>
         </div>

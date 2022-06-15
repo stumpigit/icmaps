@@ -14,6 +14,18 @@
  <!-- Navigation -->
 
  <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+  <li class="items-center">
+    <a
+      use:link
+      href="/samples/dashboard"
+      class="text-xs uppercase py-3 font-bold block {location.href.indexOf('/samples/dashboard') !== -1 ? 'text-blue-500 hover:text-blue-600':'text-blueGray-700 hover:text-blueGray-500'}"
+    >
+      <i
+        class="fas fa-tv mr-2 text-sm {location.href.indexOf('/samples/dashboard') !== -1 ? 'opacity-75' : 'text-blueGray-300'}"
+      ></i>
+      Overview
+    </a>
+  </li>
    <li class="items-center">
      <a
        use:link

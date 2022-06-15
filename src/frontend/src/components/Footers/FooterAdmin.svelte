@@ -13,10 +13,10 @@
         >
           Copyright © {date}
           <a
-            href="https://www.stumpi.ch"
+            href="https://www.icmaps.org"
             class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
           >
-            Christoph Suter
+            ICMaps
           </a>
         </div>
       </div>

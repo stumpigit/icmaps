@@ -154,10 +154,10 @@
       </div>
 
       <div
-        class="flex break-words bg-white shadow-lg rounded mb-6 mx-4"
+        class="flex break-words bg-white shadow-lg rounded mb-6 mx-4 flex-wrap"
       >
-        <div id="map" class="relative w-full rounded h-600-px" />
-        <input id="swipe" type="range" style="width: 100%" />
+        <div id="map" class="flex grow-1 relative w-full rounded h-600-px" />
+        <input class="flex shrink-0 relative w-full rounded" id="swipe" type="range" style="width: 100%" />
       </div>
     </div>
   </div>
