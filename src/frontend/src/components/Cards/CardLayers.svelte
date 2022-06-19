@@ -2,6 +2,8 @@
   // core components
   import TableDropdown from "components/Dropdowns/TableDropdown.svelte";
   import { link } from "svelte-routing";
+  import { AuthClient } from "@dfinity/auth-client";
+  import { wmtsserver,createWMTSActor, setCanisterId, getWMTSParameters, WMTS } from "../../store/wmtsserver";
 
   export let color = 'light';
 
@@ -19,7 +21,6 @@
     else mycanisterArray = Array.from(mycanisters, ([name, canisterInfo]) => ({ name, canisterInfo }));
     console.log(mycanisterArray);
   }
-  let client;
 
 </script>
 

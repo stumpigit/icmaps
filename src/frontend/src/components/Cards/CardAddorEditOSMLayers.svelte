@@ -229,7 +229,7 @@
       .replace(/\{tilecol\}/i, tilecol)
       .replace(/\{tilerow\}/i, tilerow);
     console.log(fetchUrl);
-    let file = await fetch(fetchUrl)
+    let file = await fetch(fetchUrl, {mode: 'cors'})
       .then(function (response) {
         if (!response.ok) {
           console.log("Error while fetching: ");
@@ -466,7 +466,7 @@
                   selectedZoom.Identifier,
                   tilecol,
                   tilerow,
-                  selectedZoom.totalTiles, overwrite
+                  totaltiles, overwrite
                 )
               );
               //await fetchImage(selectedZoom, tilematrixset.identifier, selectedZoom.Identifier, tilecol, tilerow);
@@ -617,15 +617,18 @@
       </div>
     {/if}
   </div>
-  {#if tileURL != null}
+  {#if newlayerid && newlayercanister && tileURL != null}
     <div class="flex flex-wrap">
+      <h6 class="w-full text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+        Bounding Box WGS 84
+      </h6>
       <div class="w-full lg:w-3/12 px-4">
         <div class="relative w-full mb-3">
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
           >
-            Bounding Box WGS 86 Min Lon
+            Min Lat
           </label>
           <input
             id="grid-username"
@@ -640,7 +643,7 @@
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
-            >Min Lat
+            >Min Lon
           </label>
           <input
             id="grid-username"
@@ -655,7 +658,7 @@
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
-            >Max Lon
+            >Max Lat
           </label>
           <input
             id="grid-username"
@@ -670,7 +673,7 @@
           <label
             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             for="grid-username"
-            >Max lat
+            >Max Lon
           </label>
           <input
             id="grid-username"
@@ -684,14 +687,11 @@
     <!-- Zoom levels -->
     {#if selectedTMS != null && selectedTMS.TileMatrix != null}
       <div class="flex flex-wrap">
+        <h6 class="w-full text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          Bounding Box in EPSG:3857
+        </h6>
         <div class="w-full lg:w-3/12 px-4">
           <div class="relative w-full mb-3">
-            <label
-              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              for="grid-username"
-            >
-              Bounding Box in EPSG:3857
-            </label>
             <input
               id="grid-username"
               type="text"

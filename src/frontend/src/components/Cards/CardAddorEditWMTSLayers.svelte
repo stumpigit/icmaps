@@ -732,13 +732,16 @@
     <!-- Zoom levels -->
     {#if selectedTMS != null && selectedTMS.TileMatrix != null}
       <div class="flex flex-wrap">
+        <h6 class="w-full text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          Bounding Box in WGS 84
+        </h6>
         <div class="w-full lg:w-3/12 px-4">
           <div class="relative w-full mb-3">
             <label
               class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               for="grid-username"
             >
-              Bounding Box WGS 86 Min Lon
+              Min Lat
             </label>
             <input
               id="grid-username"
@@ -753,7 +756,7 @@
             <label
               class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               for="grid-username"
-              >Min Lat
+              >Min Lon
             </label>
             <input
               id="grid-username"
@@ -768,7 +771,7 @@
             <label
               class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               for="grid-username"
-              >Max Lon
+              >Max Lat
             </label>
             <input
               id="grid-username"
@@ -783,7 +786,7 @@
             <label
               class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               for="grid-username"
-              >Max Lat
+              >Max Lon
             </label>
             <input
               id="grid-username"
@@ -796,14 +799,11 @@
       </div>
 
       <div class="flex flex-wrap">
+        <h6 class="w-full text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          Bounding Box in EPSG:3857
+        </h6>
         <div class="w-full lg:w-3/12 px-4">
           <div class="relative w-full mb-3">
-            <label
-              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              for="grid-username"
-            >
-              Bounding Box in EPSG:3857. Min Lon
-            </label>
             <input
               id="grid-username"
               type="text"

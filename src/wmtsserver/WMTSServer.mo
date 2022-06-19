@@ -449,6 +449,20 @@ shared({caller = owner}) actor class WMTSServer() = this {
     
     public shared({caller}) func removeLayer(layerName: Text): () {
         assert (await authorize(caller));
+
+        let mylayer = layers.get(layerName);
+        let myLayerNN: Layer =
+            switch mylayer {
+                case null {
+                    return;
+                };
+                case ( ? mylayer) {
+                    mylayer
+                }
+            };
+        Debug.print("Found layer: "
+            # myLayerNN.layerInfo.identifier);
+
         let isexistinglayer = layers.get(layerName);
         switch (isexistinglayer)
         {
@@ -456,6 +470,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
                 return;
             };
             case (? isexistinglayer) {
+                Debug.print("Existing layer");
                 let container : Container = await getOrSetContainer();
                 for (tilematrix in isexistinglayer.tilematrixes.vals()) 
                 {
@@ -472,6 +487,7 @@ shared({caller = owner}) actor class WMTSServer() = this {
                         };
                     };
                 };
+                Debug.print("Now deleting");
                 layers.delete(layerName);
             };
         };

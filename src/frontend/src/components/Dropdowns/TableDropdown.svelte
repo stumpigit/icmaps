@@ -2,6 +2,8 @@
   // library for creating dropdown menu appear on click
   import { createPopper } from "@popperjs/core";
   import { link } from "svelte-routing";
+  import { AuthClient } from "@dfinity/auth-client";
+  import { wmtsserver, createWMTSActor, setCanisterId } from "../../store/wmtsserver";
 
   // core components
 
@@ -24,6 +26,23 @@
       });
     }
   };
+
+  let client;
+  
+  async function deleteLayer(canisterid, layeridentifier) {
+    client = await AuthClient.create();
+    if (await client.isAuthenticated()) {
+      setCanisterId(canisterid);
+    wmtsserver.update(() => ({
+      loggedIn: true,
+      actor: createWMTSActor({
+        agentOptions: {
+          identity: client.getIdentity(),
+        },
+      }),
+    }));
+    let deleting = await $wmtsserver.actor.removeLayer(layeridentifier);
+  }};
 </script>
 
 <div>
@@ -52,7 +71,7 @@
       Preview
     </a>
     <a
-      href="#pablo" on:click={(e) => e.preventDefault()}
+      href="#" on:click={(e) => deleteLayer(canisterid, layeridentifier)}
       class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
     >
       Delete
