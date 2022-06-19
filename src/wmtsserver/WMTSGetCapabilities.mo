@@ -7,7 +7,7 @@ import Types "Types";
 module {
 
   public func getCapabilities(myId: Principal, wmtsParameters: Types.WMTS, layers: TrieMap.TrieMap<Text, Types.Layer>, tileMatrixSets : [var ? Types.TileMatrixSet]): Text {
-    let network = "local";
+    let network = "ic";
     var protocol: Text = "";
     var environment: Text = "";
     if (network == "local") {
