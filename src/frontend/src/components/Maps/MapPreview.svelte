@@ -86,49 +86,71 @@
 
         // code
        code = `
-       import { Map, View } from "ol";
-       import { Tile as TileLayer } from "ol/layer";
-       import { defaults as defaultControls, ScaleLine } from "ol/control";
-       import WMTS, { optionsFromCapabilities } from "ol/source/WMTS";
-       fetch(`+
-        myProtocol + "://" +
+<script>
+  import { onMount } from "svelte";
+  import Map from "ol/Map";
+  import View from "ol/View";
+  import WMTS, { optionsFromCapabilities } from "ol/source/WMTS";
+  import { fromLonLat } from "ol/proj";
+  import WMTSCapabilities from "ol/format/WMTSCapabilities";
+  import TileLayer from "ol/layer/Tile";
+  import {Attribution, defaults as defaultControls} from 'ol/control';
+
+  var view;
+  var center;
+  var markerLayer;
+
+  export function init() {
+    const parser = new WMTSCapabilities();
+
+    fetch(
+      "`+
+        myProtocol + `://` +
           mycanister.canisterId.toText() +
           myHost +
           `/wmts?request=getcapabilities",
-        { mode: "cors" }
-      )
-        .then(function (response) {
-          return response.text();
-        })
-        .then(function (text) {
-          const result = parser.read(text);
-          const options = optionsFromCapabilities(result, {
-            layer: `+layeridentifier+`,
-          });
-
-          let icsource = new WMTS(options);
-
-          let iclayer = new TileLayer({
-            opacity: 1,
-            source: icsource,
-          });
-          const map = new Map({
-            target: "map",
-            controls: defaultControls().extend([
-              new ScaleLine({
-                units: "metric",
-              }),
-            ]),
-            layers: [iclayer],
-            view: = new View({
-              projection:`+layerInfo.tilematrixset.supportedCRS+`,
-              center: `+center+`,
-              zoom: 15,
-            });,
-          });
+      { mode: "cors" }
+    )
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (text) {
+        const result = parser.read(text);
+        const options = optionsFromCapabilities(result, {
+          layer: "` + layeridentifier + `",
         });
-      }
-      `;
+
+        const source = new WMTS(options);
+        source.setAttributions(['Maps provided by ICMaps']);
+
+        let iclayer = new TileLayer({
+          opacity: 1,
+          source: source,
+        });
+        const attribution = new Attribution({
+          collapsible: false,
+        });
+        const view = new View({
+          maxZoom: 16,
+          minZoom: 10,
+          zoom: 16,
+          center: [` + center + `],
+        });
+        const olMap = new Map({
+          view,
+          target: "map",
+          layers: [iclayer],
+          controls: defaultControls({attribution: false}).extend([attribution])
+        });
+      });
+  }
+  onMount(async () => {
+    init();
+  });
+<\/script>
+
+<div id="map" />
+`;
       }
     }
   }
