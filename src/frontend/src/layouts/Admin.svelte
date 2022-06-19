@@ -141,7 +141,7 @@ function toggleModal(){
       <!--body-->
       <div class="relative p-6 flex-wrap content-center">
         <p class="flex my-4 text-blueGray-500 text-lg leading-relaxed">
-          Please wait, we get the data from the Internet Computer...
+          Please wait, we retrieve the data from the Internet Computer...
         </p>
         <div wire:loading class="flex mr-2 mt-2 justify-center">
           <svg class="animate-spin rounded-full bg-transparent border-2 border-transparent border-opacity-50 w-9 h-9" style="border-right-color: white; border-top-color: white;" viewBox="0 0 48 48"></svg>
