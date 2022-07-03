@@ -86,6 +86,29 @@ shared({caller = owner}) actor class Backend() = this {
         c.toArray();
     };
 
+    public shared({caller}) func getAllCanisters() : async [(User, MyCanistersArray)] {
+        assert (await authorize(caller));
+        let buff = Map.HashMap<User, MyCanistersArray>(100, Text.equal, Text.hash);
+        for ((user, buffer) in canisters.entries()) {
+            let canisterBuff = Buffer.Buffer<Canister>(0);
+            for (j : Canister in buffer.vals())
+            {
+                var already : Bool = false;
+                for (u : Canister in canisterBuff.vals()) 
+                {
+                    if (u.desc == j.desc) already := true;
+                };
+                if (already == false)  canisterBuff.add(j);
+            };
+            let myCans : (User, MyCanistersArray) = (user, canisterBuff.toArray());
+
+            buff.put(myCans);
+        };
+        canistersArray := Iter.toArray<(User, MyCanistersArray)>(buff.entries());
+        Debug.print("Canisters: " # debug_show(canistersArray));
+        return canistersArray;
+    };
+
     // Just for some tests
     public shared query (msg) func whoami() : async Principal {
         return msg.caller;
@@ -98,7 +121,12 @@ shared({caller = owner}) actor class Backend() = this {
             let canisterBuff = Buffer.Buffer<Canister>(0);
             for (j : Canister in buffer.vals())
             {
-              canisterBuff.add(j);
+                var already : Bool = false;
+                for (u : Canister in canisterBuff.vals()) 
+                {
+                    if (u.desc == j.desc) already := true;
+                };
+                if (already == false)  canisterBuff.add(j);
             };
             let myCans : (User, MyCanistersArray) = (user, canisterBuff.toArray());
 
